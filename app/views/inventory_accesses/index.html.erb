@@ -1,0 +1,51 @@
+<div class="mb-4"><div class="eyebrow text-primary mb-2"><%= @inventory.title %></div><h1 class="h2 fw-bold mb-1"><%= t('access.title') %></h1><p class="text-body-secondary"><%= t('access.description') %></p></div>
+<%= render 'shared/inventory_nav', inventory: @inventory, active: :access %>
+<section class="form-panel mb-4"><h2 class="h5 fw-semibold mb-3"><%= t('access.add') %></h2>
+  <%= form_with url: inventory_accesses_path(@inventory), method: :post, class: 'row g-2' do |f| %>
+    <div class="col-sm-9"><%= text_field_tag :identifier, nil, placeholder: t('access.placeholder'), class: 'form-control', required: true, autocomplete: 'off', list: 'access-suggestions', data: { suggest_url: suggest_inventory_accesses_path(@inventory) } %><datalist id="access-suggestions"></datalist></div><div class="col-sm-3"><%= f.submit t('access.add'), class: 'btn btn-primary w-100' %></div>
+  <% end %>
+</section>
+<section class="table-panel"><div class="d-flex justify-content-between align-items-center mb-3"><h2 class="h5 fw-semibold mb-0"><%= t('access.allowed') %></h2><div class="small"><%= link_to t('access.sort_name'), inventory_accesses_path(@inventory, sort: 'name') %> · <%= link_to t('access.sort_email'), inventory_accesses_path(@inventory, sort: 'email') %></div></div>
+  <%= form_with url: bulk_destroy_inventory_accesses_path(@inventory), method: :delete do |f| %>
+    <%= f.submit t('access.revoke'), class: 'btn btn-sm btn-outline-danger mb-3', data: { turbo_confirm: t('forms.confirm') } %>
+    <div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th></th><th><%= t('auth.username') %></th><th><%= t('auth.email') %></th></tr></thead><tbody>
+      <% if @accesses.any? %><% @accesses.each do |access| %><tr><td><%= check_box_tag 'access_ids[]', access.id, false, class: 'form-check-input', aria: { label: t('access.select_user', username: access.user.username) } %></td><td><%= link_to access.user.username, user_path(access.user), class: 'text-decoration-none' %></td><td><%= access.user.email %></td></tr><% end %>
+      <% else %><tr><td colspan="3" class="empty-state"><%= t('access.empty') %></td></tr><% end %>
+    </tbody></table></div>
+  <% end %>
+  <%= render 'shared/pagination', slice: @accesses_page, page_key: :page %>
+</section>
+
+<script>
+  function inventoryhubAccessAutocomplete() {
+    const input = document.querySelector('[data-suggest-url]');
+    const datalist = document.getElementById('access-suggestions');
+    if (!input || !datalist || input.dataset.bound === 'yes') return;
+    input.dataset.bound = 'yes';
+    let requestNumber = 0;
+    input.addEventListener('input', async function () {
+      const value = input.value.trim();
+      const current = ++requestNumber;
+      datalist.replaceChildren();
+      if (value.length < 2) return;
+      try {
+        const response = await fetch(input.dataset.suggestUrl + '?q=' + encodeURIComponent(value), { headers: { Accept: 'application/json' } });
+        if (!response.ok || current !== requestNumber) return;
+        const users = await response.json();
+        if (current !== requestNumber) return;
+        users.forEach(function (user) {
+          const byName = document.createElement('option');
+          byName.value = user.username;
+          byName.label = user.email;
+          datalist.appendChild(byName);
+          const byEmail = document.createElement('option');
+          byEmail.value = user.email;
+          byEmail.label = user.username;
+          datalist.appendChild(byEmail);
+        });
+      } catch (_) {}
+    });
+  }
+  document.addEventListener('DOMContentLoaded', inventoryhubAccessAutocomplete);
+  document.addEventListener('turbo:load', inventoryhubAccessAutocomplete);
+</script>

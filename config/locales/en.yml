@@ -1,0 +1,333 @@
+en:
+  time:
+    formats:
+      short: '%d %b %Y %H:%M'
+      long: '%B %d, %Y at %H:%M'
+  navigation:
+    explore: Explore
+    search: Search inventories and items
+    go: Search
+    my_profile: My inventories
+    admin: Admin
+    login: Log in
+    signup: Sign up
+    logout: Log out
+    mobile: Mobile navigation
+  home:
+    status: Version 0.8 · Integration & bug fixes
+    title: Organize everything. Find anything.
+    description: Flexible inventories for equipment, books, documents and more. Define your own fields, invite collaborators and keep
+      your items in one place.
+    explore: Explore inventories
+    readonly: Guests can browse inventories and items.
+    latest: Latest inventories
+    popular: Most popular inventories
+    tags: Tags
+    empty: No inventories have been created yet.
+  search:
+    browse: Directory
+    title: Search
+    query: Search query
+    inventories: Inventories
+    items: Matching items
+    empty: No matching items found.
+  table:
+    inventory: Inventory
+    category: Category
+    creator: Creator
+    items: Items
+    item_id: Inventory number
+    created: Created
+  auth:
+    welcome: Your workspace
+    signup: Create an account
+    login: Log in
+    username: Username
+    email: Email address
+    password: Password
+    password_confirmation: Confirm password
+    no_account: Don't have an account?
+    already: Already registered?
+  forms:
+    save: Save changes
+    cancel: Cancel
+    confirm: Are you sure? This action cannot be undone.
+    errors: 'Please fix the following:'
+    next: Next page
+    previous: Previous page
+  users:
+    profile: User profile
+    owned: Owned inventories
+    writable: Inventories with write access
+    filter: Filter inventories by title
+    newest: Newest first
+    title: Title A–Z
+    popular: Most items
+    apply: Apply filters
+    filter_owned: Filter owned inventories
+    filter_writable: Filter inventories with write access
+    sort_owned: Sort owned inventories
+    sort_writable: Sort writable inventories
+    select_to_delete: Select owned inventories to remove them using the toolbar.
+    select_inventory: Select inventory %{title}
+  inventories:
+    directory: All inventories
+    new: Create inventory
+    edit: General settings
+    delete: Delete inventory
+    delete_warning: This permanently removes the inventory and all its items.
+    title: Inventory name
+    description: Description
+    pick_category: Choose a category
+    public: All authenticated users can add or edit items
+    public_help: If disabled, only you, admins and users in the access list may modify items. Everyone can still read items.
+    public_status: Public write access
+    private_status: Restricted write access
+    items: Items
+    fields: Fields
+    access: Access
+    settings: Settings
+    no_description: No description provided.
+    delete_selected: Delete selected inventories
+  items:
+    new: Add item
+    edit: Edit item
+    delete: Delete item
+    delete_selected: Delete selected
+    empty: This inventory has no items yet.
+    generated: Leave empty to generate an inventory number
+    id_hint: Leave blank to generate the number automatically. Entering a number manually requires matching the currently configured
+      custom ID format.
+    select_hint: Select rows below to delete multiple items. Open a number to edit an item.
+    id_example: 'Example generated number:'
+    select_all: Select all visible items
+    select_one: Select item %{id}
+  fields:
+    order: Order
+    title: Custom fields
+    description: Configure the 15 typed field slots and drag rows to reorder them. Renaming or reordering fields preserves existing
+      item values.
+    enabled: Enable
+    type: Type
+    label: Field title
+    hint: Help text
+    table: In table
+    kinds:
+      string: Single-line text
+      text: Multi-line text
+      number: Number
+      link: Link
+      bool: Checkbox
+    enable_field: 'Enable %{type} #%{slot}'
+    table_field: 'Display %{type} #%{slot} in the item table'
+  access:
+    title: Write access
+    description: Add specific registered users who can add, edit and remove items. Only the owner and admins can change inventory settings.
+    add: Grant access
+    placeholder: Type a username or email (suggestions appear)
+    allowed: Users with access
+    sort_name: By username
+    sort_email: By email
+    revoke: Revoke selected
+    empty: No individually invited users.
+    select_user: Select user %{username}
+  admin:
+    title: User management
+    hint: Select one user, then apply an operation. You can remove your own admin rights.
+    search: Search username or email
+    block: Block
+    unblock: Unblock
+    promote: Grant admin
+    demote: Remove admin
+    delete: Delete user
+    apply: Apply to selected user
+    role: Role
+    status: Status
+    admin: Admin
+    member: Member
+    blocked: Blocked
+    active: Active
+    empty: No users match the query.
+    confirm: Confirm this user management action?
+    select_user: Select user %{username}
+  flash:
+    registered: Account created successfully.
+    logged_in: Signed in successfully.
+    logged_out: Signed out.
+    login_required: Please sign in to continue.
+    forbidden: You do not have permission to perform this action.
+    blocked: This account is blocked.
+    invalid_login: Invalid email address or password.
+    created: Created successfully.
+    saved: Changes saved.
+    deleted: Deleted successfully.
+    stale: Someone else saved a newer version. Reload the form and review their changes.
+    duplicate_id: An item with this inventory number already exists.
+    user_not_found: No eligible user matches that username or email address.
+    fields_title_required: Active fields must have a title.
+    invalid_id_format: does not match the current custom ID format. Open the Custom ID tab to check the rules.
+  footer:
+    stage: Rails · PostgreSQL · Bootstrap · Render
+  ids:
+    tab: Custom ID
+    title: Custom inventory numbers
+    description: Build the unique number generated for each new item. Existing item numbers never change when you change this template.
+    preview: Example
+    preview_note: An illustrative sample. Actual random values and sequence numbers are generated at item creation.
+    manual_save: Save changes manually
+    elements: ID elements
+    reorder_help: Drag the grip to reorder, or focus it and press ↑ / ↓. Add up to 15 elements.
+    add: Add element
+    empty: No elements defined. The default INV-000001 sequence format will be used.
+    trash: Drop an element here to remove it, or use the × button on the element.
+    drag: Drag to reorder (keyboard ↑ / ↓)
+    remove: Remove element
+    element_type: Element type
+    pattern: Text or format
+    help: Formatting help
+    types:
+      fixed: Fixed text
+      random20: 20-bit random
+      random32: 32-bit random
+      random6: 6-digit random
+      random9: 9-digit random
+      guid: GUID
+      datetime: Date/time
+      sequence: Sequence
+    help_text:
+      fixed: Any constant Unicode text or emoji, such as COMP- or 📚_. It appears exactly as entered.
+      random20: Random integer from 0 to 1,048,575. Use X5 for five-digit uppercase hexadecimal (A7E3A) or D7 for padded decimal; D
+        or X omits leading padding.
+      random32: Random integer from 0 to 4,294,967,295. Use X8 for eight-digit uppercase hexadecimal (E74FA329), or D10 for padded decimal.
+      random6: Random integer from 0 to 999999. D6 always yields six digits, with leading zeros when needed. D1 and X5 are also supported.
+      random9: Random integer from 0 to 999999999. D9 yields nine digits, including leading zeros. D1 and X8 are also supported.
+      guid: Use D for the hyphenated form, N for 32 hex digits without hyphens, B for braces or P for parentheses.
+      datetime: Use yyyy, yy, MM, dd, ddd, HH, mm, ss and separators such as -, _, /, space, colon or period. Example yyyy-MM-dd.
+      sequence: The next value is max(existing sequence_number) + 1 when the item is created. Use D3 for 001, D6 for 000001, X5 for
+        hex, or D for an unpadded number.
+    outside_hint: Dropping an ID element outside the list removes it. You can also use the × button or the removal zone.
+    errors:
+      too_many: The ID may contain at most %{count} elements.
+      generated_too_long: Generated inventory number exceeds %{count} characters.
+      unknown_kind: Unknown ID element type.
+      empty_pattern: Each ID element requires a format or fixed text.
+      part_too_long: An ID element cannot exceed %{count} characters.
+      number_format: Use D, D3, D6, X5, or X8 (width 1–99).
+      guid_format: GUID format must be N, D, B, or P.
+      date_format: 'Use yyyy, yy, MM, dd, ddd, HH, mm, ss and separators - _ . / : or space.'
+      invalid_list: Invalid ID element list.
+      invalid_element: Invalid ID element.
+      invalid_order: Invalid ID element ordering.
+  autosave:
+    inactive: Auto-save is not active. Use Save changes.
+    enabled: Auto-save every 8 seconds
+    saved: All changes saved
+    pending: Unsaved changes
+    saving: Saving changes…
+    conflict: Another editor changed this inventory. Your changes were not overwritten. Copy them before reloading.
+    invalid: Cannot save these settings
+    failed: Save failed. Retrying automatically.
+    reload: Reload current version
+  comments:
+    tab: Discussion
+    title: Inventory discussion
+    description: Posts are chronological; new messages are shown automatically.
+    posts: Posts
+    empty: No messages yet. Start the discussion.
+    new: Add a post
+    body: Your message
+    placeholder: Write your message here…
+    markdown: Supports Markdown formatting. Raw HTML is escaped.
+    send: Post message
+    posted: Message posted.
+    latest: Back to newest posts
+    older: Load older posts
+    auto_refresh: Updates every 3 seconds
+    login_hint: Sign in to join the discussion.
+  likes:
+    count: 'Likes: %{count}'
+    like: Like
+    unlike: Unlike
+    added: You liked this item.
+    removed: Like removed.
+    login_hint: Sign in to like this item.
+  tags:
+    label: Inventory tags
+    placeholder: Add tags, separated by commas
+    help: Add up to 12 tags. Start typing to see suggestions from existing tags.
+    empty: No tags yet. Add tags to an inventory to populate this cloud.
+    invalid: Enter at most 12 tags, each at most 40 characters long.
+    filtered_by: Tag filter
+    clear_filter: Clear filter
+    inventories_count:
+      one: 1 inventory
+      other: '%{count} inventories'
+  images:
+    title: Inventory illustration
+    upload: Upload image
+    remove: Remove image
+    preview: Inventory illustration
+    help: Image files are uploaded directly to Cloudinary; save settings afterwards.
+    uploaded: Image uploaded. Save changes to keep it.
+    failed: Upload failed. Try again.
+    not_configured: Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME and CLOUDINARY_UPLOAD_PRESET on the server to enable direct
+      uploads.
+    invalid_url: must be a secure image URL from the configured Cloudinary account
+  stats:
+    tab: Stats
+    title: Inventory statistics
+    description: Live aggregates of the typed item values; only enabled custom fields are included.
+    total: Total items
+    fields: Field summaries
+    filled: Values filled
+    summary: Summary
+    average: Average
+    range: Range
+    "yes": "Yes"
+    "no": "No"
+    empty: Enable custom fields to see their statistics.
+  oauth:
+    or: or continue with
+    continue_with: Continue with %{provider}
+    not_configured: Social sign-in has not been configured on this server.
+    account: Account security
+    connections: Connected accounts
+    connections_help: Sign in with Google or Facebook, or connect a provider to your existing account.
+    connected: Connected
+    disconnected: Not connected
+    connect: Connect
+    disconnect: Disconnect
+    disconnect_confirm: Disconnect this provider from your account?
+    security_note: Existing accounts are never automatically merged based on email. Log in with your password before connecting a provider.
+    last_method: You cannot disconnect your only available sign-in method.
+    not_connected: This provider is not connected to your account.
+    linked: The provider was connected successfully.
+    unlinked: The provider was disconnected.
+    already_linked: This provider identity is linked to another account, or you have already linked a different identity from that provider.
+    use_link: You are already logged in. Use Connected accounts to connect another provider.
+    email_exists: An account with this email already exists. Sign in with its password, then connect the provider in Connected accounts.
+    failed: Social sign-in could not be completed. Please try again or use your password.
+  exports:
+    title: Export items
+    csv: CSV
+    xlsx: Excel (.xlsx)
+    columns:
+      custom_id: Inventory number
+      creator: Created by
+      created_at: Created at (UTC)
+  preferences:
+    title: Preferences
+    description: Your language and theme are saved to your account and follow you between devices. Guests can save them in this browser.
+    language: Interface language
+    language_help: Inventory titles and item values are not translated.
+    theme: Color theme
+    english: English
+    polish: Polish
+    light: Light
+    dark: Dark
+    toggle_theme: Switch color theme
+    saved: Preferences saved.
+    invalid: Invalid preference value.
+  pagination:
+    navigation: Pagination
+    page: Page %{number}

@@ -1,0 +1,11 @@
+<% if slice.previous? || slice.next? %>
+  <nav class="d-flex gap-2 align-items-center justify-content-end mt-3 flex-wrap" aria-label="<%= t('pagination.navigation') %>">
+    <% if slice.previous? %>
+      <%= link_to t('forms.previous'), url_for(request.query_parameters.merge(page_key.to_s => slice.page - 1)), class: 'btn btn-sm btn-outline-secondary' %>
+    <% end %>
+    <span class="small text-body-secondary" aria-current="page"><%= t('pagination.page', number: slice.page) %></span>
+    <% if slice.next? %>
+      <%= link_to t('forms.next'), url_for(request.query_parameters.merge(page_key.to_s => slice.page + 1)), class: 'btn btn-sm btn-outline-secondary' %>
+    <% end %>
+  </nav>
+<% end %>

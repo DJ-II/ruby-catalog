@@ -1,0 +1,18 @@
+<div class="id-part-row" data-id-part>
+  <span class="id-drag-handle" title="<%= t('ids.drag') %>" role="button" tabindex="0" aria-label="<%= t('ids.drag') %>">⠿</span>
+  <div class="id-part-type">
+    <label class="visually-hidden" for="id_kind_<%= key %>"><%= t('ids.element_type') %></label>
+    <select class="form-select" id="id_kind_<%= key %>" name="parts[<%= key %>][kind]" data-id-kind>
+      <% CustomIdFormat::KINDS.each do |kind| %>
+        <option value="<%= kind %>" <%= 'selected' if part.kind == kind %>><%= t("ids.types.#{kind}") %></option>
+      <% end %>
+    </select>
+  </div>
+  <div class="id-part-pattern">
+    <label class="visually-hidden" for="id_pattern_<%= key %>"><%= t('ids.pattern') %></label>
+    <input class="form-control font-monospace" id="id_pattern_<%= key %>" name="parts[<%= key %>][pattern]" value="<%= part.pattern %>" data-id-pattern maxlength="200" required autocomplete="off">
+    <input type="hidden" name="parts[<%= key %>][position]" value="<%= part.position %>" data-id-position>
+  </div>
+  <button type="button" class="btn btn-outline-secondary id-part-help" data-id-help-trigger data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="top" aria-label="<%= t('ids.help') %>">?</button>
+  <button type="button" class="btn btn-outline-danger id-part-remove" data-remove-id-part aria-label="<%= t('ids.remove') %>">×</button>
+</div>

@@ -1,0 +1,2 @@
+<div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3"><div><h1 class="fw-bold"><%= t('inventories.directory') %></h1></div><% if current_user %><%= link_to t('inventories.new'), new_inventory_path, class: 'btn btn-primary' %><% end %></div>
+<section class="table-panel"><%= render 'shared/inventory_table', inventories: @inventories %><%= render 'shared/pagination', slice: @inventory_page, page_key: :page %></section>

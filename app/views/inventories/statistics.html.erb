@@ -1,0 +1,49 @@
+<div class="mb-4">
+  <div class="eyebrow text-primary mb-2"><%= link_to @inventory.title, inventory_path(@inventory), class: 'text-decoration-none' %></div>
+  <h1 class="h2 fw-bold"><%= t('stats.title') %></h1>
+  <p class="text-body-secondary"><%= t('stats.description') %></p>
+</div>
+<%= render 'shared/inventory_nav', inventory: @inventory, active: :statistics %>
+<section class="table-panel mb-4">
+  <div class="eyebrow text-primary mb-2"><%= t('stats.total') %></div>
+  <div class="display-5 fw-bold"><%= @statistics.total %></div>
+</section>
+<section class="table-panel">
+  <h2 class="h5 fw-semibold mb-3"><%= t('stats.fields') %></h2>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead><tr><th><%= t('fields.label') %></th><th><%= t('fields.type') %></th><th><%= t('stats.filled') %></th><th><%= t('stats.summary') %></th></tr></thead>
+      <tbody>
+        <% if @statistics.fields.any? %>
+          <% @statistics.fields.each do |entry| %>
+            <% field = entry.fetch(:definition) %>
+            <% data = entry.fetch(:summary) %>
+            <tr>
+              <td class="fw-semibold"><%= field.title %></td>
+              <td><%= t("fields.kinds.#{field.kind}") %></td>
+              <% if field.kind == 'number' %>
+                <td><%= data[:numeric_count] %></td>
+                <td><%= t('stats.average') %>: <%= data[:average] ? inventory_number_display(data[:average], precision: 2) : '—' %> · <%= t('stats.range') %>: <%= inventory_number_display(data[:minimum]) %> – <%= inventory_number_display(data[:maximum]) %></td>
+              <% elsif field.kind == 'bool' %>
+                <td><%= data[:true_count] + data[:false_count] %></td>
+                <td><%= t('stats.yes') %>: <%= data[:true_count] %> · <%= t('stats.no') %>: <%= data[:false_count] %></td>
+              <% elsif field.kind == 'string' %>
+                <td><%= data[:string_count] %></td>
+                <td>
+                  <% if entry[:common].any? %>
+                    <% entry[:common].each do |candidate| %><span class="badge text-bg-light border me-1 mb-1 stats-value-badge"><%= candidate[:value] %> × <%= candidate[:count] %></span><% end %>
+                  <% else %>—<% end %>
+                </td>
+              <% else %>
+                <td><%= data[field.kind == 'text' ? :text_count : :link_count] %></td>
+                <td>—</td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr><td colspan="4" class="empty-state"><%= t('stats.empty') %></td></tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>

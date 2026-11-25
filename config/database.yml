@@ -1,0 +1,30 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  max_connections: 5
+
+development:
+  <<: *default
+  host: 127.0.0.1
+  port: 5433
+  username: postgres
+  password: <%= ENV["PGPASSWORD"].to_json %>
+  database: inventoryhub_development
+  sslmode: disable
+  gssencmode: disable
+  connect_timeout: 5
+
+test:
+  <<: *default
+  host: 127.0.0.1
+  port: 5433
+  username: postgres
+  password: <%= ENV["PGPASSWORD"].to_json %>
+  database: inventoryhub_test
+  sslmode: disable
+  gssencmode: disable
+  connect_timeout: 5
+
+production:
+  <<: *default
+  url: <%= ENV["DATABASE_URL"] %>

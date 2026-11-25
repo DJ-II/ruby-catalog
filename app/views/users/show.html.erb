@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+  <div><div class="eyebrow text-primary mb-2"><%= t('users.profile') %></div><h1 class="fw-bold mb-1"><%= @user.username %></h1>
+    <% if current_user == @user || current_user&.admin? %><span class="text-body-secondary"><%= @user.email %></span><% end %>
+  </div>
+  <% if @can_manage_profile %><%= link_to t('inventories.new'), new_inventory_path, class: 'btn btn-primary' %><% end %>
+</div>
+<section class="table-panel mb-4">
+  <h2 class="h5 fw-bold mb-3"><%= t('users.owned') %></h2>
+  <%= form_with url: user_path(@user), method: :get, class: 'row g-2 mb-3' do |f| %>
+    <%= hidden_field_tag :writable_filter, @writable_filter %>
+    <%= hidden_field_tag :writable_sort, @writable_sort %>
+    <%= hidden_field_tag :writable_page, @writable_page.page %>
+    <div class="col-md-5"><%= f.search_field :owned_filter, value: @owned_filter, class: 'form-control', placeholder: t('users.filter'), aria: { label: t('users.filter_owned') } %></div>
+    <div class="col-md-4"><%= f.select :owned_sort, options_for_select([[t('users.newest'), 'newest'], [t('users.title'), 'title'], [t('users.popular'), 'popular']], @owned_sort), {}, class: 'form-select', aria: { label: t('users.sort_owned') } %></div>
+    <div class="col-md-auto"><%= f.submit t('users.apply'), class: 'btn btn-outline-primary' %></div>
+  <% end %>
+  <% if @can_manage_profile %>
+    <%= form_with url: bulk_destroy_user_inventories_path(@user), method: :delete do |f| %>
+      <div class="d-flex gap-2 mb-3 flex-wrap">
+        <%= f.submit t('inventories.delete_selected'), class: 'btn btn-sm btn-outline-danger', data: { turbo_confirm: t('forms.confirm') } %>
+        <span class="small text-body-secondary"><%= t('users.select_to_delete') %></span>
+      </div>
+      <%= render 'shared/inventory_table', inventories: @owned, selectable: true %>
+    <% end %>
+  <% else %>
+    <%= render 'shared/inventory_table', inventories: @owned %>
+  <% end %>
+  <%= render 'shared/pagination', slice: @owned_page, page_key: :owned_page %>
+</section>
+<section class="table-panel">
+  <h2 class="h5 fw-bold mb-3"><%= t('users.writable') %></h2>
+  <%= form_with url: user_path(@user), method: :get, class: 'row g-2 mb-3' do |f| %>
+    <%= hidden_field_tag :owned_filter, @owned_filter %>
+    <%= hidden_field_tag :owned_sort, @owned_sort %>
+    <%= hidden_field_tag :owned_page, @owned_page.page %>
+    <div class="col-md-5"><%= f.search_field :writable_filter, value: @writable_filter, class: 'form-control', placeholder: t('users.filter'), aria: { label: t('users.filter_writable') } %></div>
+    <div class="col-md-4"><%= f.select :writable_sort, options_for_select([[t('users.newest'), 'newest'], [t('users.title'), 'title'], [t('users.popular'), 'popular']], @writable_sort), {}, class: 'form-select', aria: { label: t('users.sort_writable') } %></div>
+    <div class="col-md-auto"><%= f.submit t('users.apply'), class: 'btn btn-outline-primary' %></div>
+  <% end %>
+  <%= render 'shared/inventory_table', inventories: @writable %>
+  <%= render 'shared/pagination', slice: @writable_page, page_key: :writable_page %>
+</section>

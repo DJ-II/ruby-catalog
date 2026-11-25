@@ -1,0 +1,12 @@
+<% providers = [['google_oauth2', 'Google'], ['facebook', 'Facebook']] %>
+<% enabled = providers.select { |provider, _name| oauth_provider_enabled?(provider) } %>
+<% if enabled.any? %>
+  <div class="d-flex align-items-center gap-3 my-4"><hr class="flex-grow-1 m-0"><span class="small text-body-secondary"><%= t('oauth.or') %></span><hr class="flex-grow-1 m-0"></div>
+  <div class="d-grid gap-2">
+    <% enabled.each do |provider, label| %>
+      <%= button_to t('oauth.continue_with', provider: label), "/auth/#{provider}", method: :post, params: { intent: intent }, form: { data: { turbo: false } }, class: 'btn btn-outline-secondary w-100 py-2' %>
+    <% end %>
+  </div>
+<% else %>
+  <p class="small text-body-secondary mt-3 mb-0"><%= t('oauth.not_configured') %></p>
+<% end %>

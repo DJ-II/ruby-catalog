@@ -1,0 +1,42 @@
+<% content_for :home_banner do %>
+  <section class="home-banner">
+    <div class="container site-container"><h1><%= t('home.title') %></h1></div>
+  </section>
+<% end %>
+<div class="row g-4">
+  <div class="col-xl-8">
+    <section class="table-panel h-100">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+        <h2 class="h5 fw-semibold mb-0"><%= t('home.latest') %></h2>
+        <% if current_user %><%= link_to t('inventories.new'), new_inventory_path, class: 'btn btn-primary' %><% end %>
+      </div>
+      <%= render 'shared/inventory_table', inventories: @latest %>
+    </section>
+  </div>
+  <div class="col-xl-4">
+    <section class="table-panel h-100">
+      <h2 class="h5 fw-semibold mb-3"><%= t('home.popular') %></h2>
+      <div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th><%= t('table.inventory') %></th><th class="text-end"><%= t('table.items') %></th></tr></thead><tbody>
+        <% if @popular.any? %>
+          <% @popular.each do |inventory| %><tr><td><%= link_to inventory.title, inventory_path(inventory), class: 'text-decoration-none fw-semibold' %></td><td class="text-end font-monospace"><%= inventory.items_count %></td></tr><% end %>
+        <% else %><tr><td colspan="2" class="empty-state"><%= t('home.empty') %></td></tr><% end %>
+      </tbody></table></div>
+    </section>
+  </div>
+</div>
+<section class="table-panel mt-4">
+  <h2 class="h5 fw-semibold mb-3"><%= t('home.tags') %></h2>
+  <% if @tag_cloud.any? %>
+    <div class="tag-cloud d-flex flex-wrap align-items-center gap-2">
+      <% largest = @tag_cloud.map(&:inventories_count).map(&:to_i).max.to_f %>
+      <% @tag_cloud.each do |tag| %>
+        <% weight = tag.inventories_count.to_i / largest %>
+        <%= link_to "##{tag.name}", search_path(tag: tag.name), class: 'tag-cloud-link',
+                    style: "font-size: #{(0.85 + weight * 0.22).round(2)}rem",
+                    title: t('tags.inventories_count', count: tag.inventories_count) %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-body-secondary mb-0"><%= t('tags.empty') %></p>
+  <% end %>
+</section>

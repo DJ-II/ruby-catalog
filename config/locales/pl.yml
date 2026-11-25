@@ -1,0 +1,334 @@
+pl:
+  time:
+    formats:
+      short: '%d.%m.%Y %H:%M'
+      long: '%d.%m.%Y o %H:%M'
+  navigation:
+    explore: Przeglądaj
+    search: Szukaj inwentarzy i przedmiotów
+    go: Szukaj
+    my_profile: Moje inwentarze
+    admin: Administrator
+    login: Zaloguj
+    signup: Rejestracja
+    logout: Wyloguj
+    mobile: Nawigacja mobilna
+  home:
+    status: Wersja 0.8 · Integracja i poprawki
+    title: Porządkuj wszystko. Znajduj bez trudu.
+    description: Elastyczne inwentarze sprzętu, książek i dokumentów. Definiuj pola, zapraszaj współpracowników i kataloguj przedmioty
+      w jednym miejscu.
+    explore: Przeglądaj inwentarze
+    readonly: Goście mogą przeglądać inwentarze i przedmioty.
+    latest: Najnowsze inwentarze
+    popular: Najpopularniejsze inwentarze
+    tags: Tagi
+    empty: Nie utworzono jeszcze żadnych inwentarzy.
+    no_tags: Chmura tagów pojawi się w kolejnej wersji.
+  search:
+    browse: Katalog
+    title: Wyszukiwarka
+    query: Szukana fraza
+    inventories: Inwentarze
+    items: Znalezione przedmioty
+    empty: Nie znaleziono przedmiotów.
+  table:
+    inventory: Inwentarz
+    category: Kategoria
+    creator: Autor
+    items: Przedmioty
+    item_id: Numer inwentarzowy
+    created: Utworzono
+  auth:
+    welcome: Twoja przestrzeń
+    signup: Utwórz konto
+    login: Zaloguj się
+    username: Nazwa użytkownika
+    email: Adres e-mail
+    password: Hasło
+    password_confirmation: Potwierdź hasło
+    no_account: Nie masz konta?
+    already: Masz już konto?
+  forms:
+    save: Zapisz zmiany
+    cancel: Anuluj
+    confirm: Czy na pewno? Tej operacji nie można cofnąć.
+    errors: 'Popraw następujące błędy:'
+    next: Następna strona
+    previous: Poprzednia strona
+  users:
+    profile: Profil użytkownika
+    owned: Własne inwentarze
+    writable: Inwentarze z prawem zapisu
+    filter: Filtruj inwentarze po nazwie
+    newest: Od najnowszych
+    title: Nazwa A–Z
+    popular: Najwięcej przedmiotów
+    apply: Zastosuj filtry
+    filter_owned: Filtruj własne inwentarze
+    filter_writable: Filtruj inwentarze z dostępem do zapisu
+    sort_owned: Sortuj własne inwentarze
+    sort_writable: Sortuj inwentarze z dostępem do zapisu
+    select_to_delete: Zaznacz własne inwentarze, aby usunąć je przyciskiem nad tabelą.
+    select_inventory: Zaznacz inwentarz %{title}
+  inventories:
+    directory: Wszystkie inwentarze
+    new: Nowy inwentarz
+    edit: Ustawienia ogólne
+    delete: Usuń inwentarz
+    delete_warning: Trwale usuwa inwentarz i wszystkie jego przedmioty.
+    title: Nazwa inwentarza
+    description: Opis
+    pick_category: Wybierz kategorię
+    public: Wszyscy zalogowani mogą dodawać i edytować przedmioty
+    public_help: Po wyłączeniu zapisywać mogą tylko właściciel, administratorzy i użytkownicy z listy dostępu. Każdy może przeglądać
+      przedmioty.
+    public_status: Publiczny zapis
+    private_status: Ograniczony zapis
+    items: Przedmioty
+    fields: Pola
+    access: Dostęp
+    settings: Ustawienia
+    no_description: Brak opisu.
+    delete_selected: Usuń zaznaczone inwentarze
+  items:
+    new: Dodaj przedmiot
+    edit: Edytuj przedmiot
+    delete: Usuń przedmiot
+    delete_selected: Usuń zaznaczone
+    empty: W tym inwentarzu nie ma jeszcze przedmiotów.
+    generated: Pozostaw puste, aby wygenerować numer
+    id_hint: Pozostaw puste, aby automatycznie wygenerować numer. Numer wpisany ręcznie musi pasować do bieżącego formatu ID.
+    select_hint: Zaznacz wiersze, aby usunąć wiele przedmiotów. Kliknij numer, aby edytować.
+    id_example: 'Przykładowy wygenerowany numer:'
+    select_all: Zaznacz wszystkie widoczne przedmioty
+    select_one: Zaznacz przedmiot %{id}
+  fields:
+    order: Kolejność
+    title: Własne pola
+    description: Włącz wybrane z 15 typowanych pól, nadaj im nazwy i wybierz widoczność w tabeli. Zmiana nazwy zachowuje zapisane wcześniej
+      wartości.
+    enabled: Aktywne
+    type: Typ
+    label: Nazwa pola
+    hint: Podpowiedź
+    table: W tabeli
+    kinds:
+      string: Tekst jednoliniowy
+      text: Tekst wieloliniowy
+      number: Liczba
+      link: Link
+      bool: Pole wyboru
+    enable_field: Włącz pole %{type} nr %{slot}
+    table_field: Pokaż pole %{type} nr %{slot} w tabeli przedmiotów
+  access:
+    title: Uprawnienia zapisu
+    description: Dodaj zarejestrowanych użytkowników, którzy mogą dodawać, edytować i usuwać przedmioty. Ustawienia zmienia właściciel
+      i administratorzy.
+    add: Nadaj dostęp
+    placeholder: Wpisz nazwę użytkownika lub e-mail (pojawią się podpowiedzi)
+    allowed: Użytkownicy z dostępem
+    sort_name: Według nazwy
+    sort_email: Według e-maila
+    revoke: Odbierz zaznaczonym
+    empty: Brak użytkowników dopisanych indywidualnie.
+    select_user: Zaznacz użytkownika %{username}
+  admin:
+    title: Zarządzanie użytkownikami
+    hint: Zaznacz użytkownika i wykonaj operację. Możesz również odebrać uprawnienia administratora samemu sobie.
+    search: Wyszukaj nazwę lub adres e-mail
+    block: Zablokuj
+    unblock: Odblokuj
+    promote: Nadaj admina
+    demote: Odbierz admina
+    delete: Usuń użytkownika
+    apply: Wykonaj dla zaznaczonego
+    role: Rola
+    status: Status
+    admin: Administrator
+    member: Użytkownik
+    blocked: Zablokowany
+    active: Aktywny
+    empty: Brak użytkowników spełniających kryteria.
+    confirm: Potwierdzasz operację zarządzania kontem?
+    select_user: Zaznacz użytkownika %{username}
+  flash:
+    registered: Konto zostało utworzone.
+    logged_in: Pomyślnie zalogowano.
+    logged_out: Wylogowano.
+    login_required: Zaloguj się, aby kontynuować.
+    forbidden: Brak uprawnień do wykonania tej operacji.
+    blocked: Konto jest zablokowane.
+    invalid_login: Nieprawidłowy e-mail lub hasło.
+    created: Utworzono pomyślnie.
+    saved: Zmiany zostały zapisane.
+    deleted: Usunięto pomyślnie.
+    stale: Ktoś zapisał nowszą wersję. Odśwież formularz i sprawdź zmiany.
+    duplicate_id: Przedmiot o tym numerze już istnieje.
+    user_not_found: Nie znaleziono uprawnionego użytkownika o tej nazwie lub e-mailu.
+    fields_title_required: Aktywne pola muszą mieć nazwę.
+    invalid_id_format: nie odpowiada bieżącemu formatowi ID. Sprawdź reguły w zakładce Format ID.
+  footer:
+    stage: Rails · PostgreSQL · Bootstrap · Render
+  ids:
+    tab: Format ID
+    title: Niestandardowe numery inwentarzowe
+    description: Zbuduj unikalny numer generowany przy dodawaniu przedmiotu. Zmiana szablonu nie modyfikuje wcześniej nadanych numerów.
+    preview: Podgląd numeru
+    preview_note: Podgląd przykładowy. Wartości losowe i sekwencje są generowane podczas dodawania przedmiotu.
+    manual_save: Zapis ręczny
+    elements: Elementy numeru
+    reorder_help: Przeciągnij uchwyt, aby zmienić kolejność, lub użyj klawiszy ↑ / ↓. Maksymalnie 15 elementów.
+    add: Dodaj element
+    empty: Brak elementów. Zostanie użyty domyślny format sekwencji INV-000001.
+    trash: Przeciągnij tutaj element, aby go usunąć, albo użyj przycisku ×.
+    drag: Przeciągnij (klawiatura ↑ / ↓)
+    remove: Usuń element
+    element_type: Typ elementu
+    pattern: Tekst lub format
+    help: Pomoc formatowania
+    types:
+      fixed: Stały tekst
+      random20: Liczba losowa 20-bitowa
+      random32: Liczba losowa 32-bitowa
+      random6: Liczba losowa 6-cyfrowa
+      random9: Liczba losowa 9-cyfrowa
+      guid: GUID
+      datetime: Data / godzina
+      sequence: Sekwencja
+    help_text:
+      fixed: Dowolny stały tekst Unicode lub emoji, np. COMP- lub 📚_. Pojawia się dokładnie w podanej postaci.
+      random20: Liczba z zakresu 0–1048575. Użyj X5 dla pięciu znaków szesnastkowych (A7E3A) lub D7 dla dziesiętnego zapisu z zerami.
+      random32: Liczba z zakresu 0–4294967295. Użyj X8 dla ośmiu znaków szesnastkowych (E74FA329) lub D10 dla zapisu dziesiętnego.
+      random6: Liczba z zakresu 0–999999. D6 zawsze daje sześć cyfr, uzupełniając je zerami. Dostępne są również D1 oraz X5.
+      random9: Liczba z zakresu 0–999999999. D9 daje dziewięć cyfr, także z zerami na początku.
+      guid: D to standardowa postać z myślnikami, N to 32 znaki bez myślników, B to nawiasy klamrowe, P to nawiasy okrągłe.
+      datetime: 'Dostępne znaczniki yyyy, yy, MM, dd, ddd, HH, mm, ss i separatory - _ / spacja : . Przykład yyyy-MM-dd.'
+      sequence: Następna wartość to największy istniejący numer sekwencji + 1. D3 oznacza 001, D6 000001, X5 szesnastkowo, a D bez zer.
+    outside_hint: Upuszczenie elementu poza listą usuwa go. Możesz też użyć przycisku × albo obszaru usuwania.
+    errors:
+      too_many: Numer może zawierać maksymalnie %{count} elementów.
+      generated_too_long: Wygenerowany numer przekracza %{count} znaków.
+      unknown_kind: Nieznany typ elementu numeru.
+      empty_pattern: Każdy element musi mieć format lub stały tekst.
+      part_too_long: Element numeru nie może przekraczać %{count} znaków.
+      number_format: Użyj D, D3, D6, X5 lub X8 (szerokość 1–99).
+      guid_format: Format GUID musi mieć postać N, D, B lub P.
+      date_format: 'Użyj yyyy, yy, MM, dd, ddd, HH, mm, ss i separatorów - _ . / : lub spacji.'
+      invalid_list: Nieprawidłowa lista elementów numeru.
+      invalid_element: Nieprawidłowy element numeru.
+      invalid_order: Nieprawidłowa kolejność elementów numeru.
+  autosave:
+    inactive: Automatyczny zapis jest nieaktywny. Użyj przycisku zapisu.
+    enabled: Automatyczny zapis co 8 sekund
+    saved: Wszystkie zmiany zapisane
+    pending: Niezapisane zmiany
+    saving: Zapisywanie zmian…
+    conflict: Ktoś zmienił ten inwentarz. Twoje zmiany nie zostały nadpisane. Skopiuj je przed odświeżeniem.
+    invalid: Nie można zapisać tych ustawień
+    failed: Błąd zapisu. Ponowna próba nastąpi automatycznie.
+    reload: Wczytaj aktualną wersję
+  comments:
+    tab: Dyskusja
+    title: Dyskusja o inwentarzu
+    description: Wpisy są chronologiczne, a nowe pojawiają się automatycznie.
+    posts: Wpisy
+    empty: Brak wiadomości. Rozpocznij dyskusję.
+    new: Dodaj wpis
+    body: Twoja wiadomość
+    placeholder: Wpisz wiadomość…
+    markdown: Obsługiwane jest formatowanie Markdown. HTML jest traktowany jako tekst.
+    send: Opublikuj
+    posted: Wiadomość została opublikowana.
+    latest: Wróć do najnowszych wpisów
+    older: Starsze wpisy
+    auto_refresh: Aktualizacja co 3 sekundy
+    login_hint: Zaloguj się, aby wziąć udział w dyskusji.
+  likes:
+    count: 'Polubienia: %{count}'
+    like: Polub
+    unlike: Cofnij polubienie
+    added: Polubiono przedmiot.
+    removed: Cofnięto polubienie.
+    login_hint: Zaloguj się, aby polubić przedmiot.
+  tags:
+    label: Tagi inwentarza
+    placeholder: Dodaj tagi, oddzielając je przecinkami
+    help: Maksymalnie 12 tagów. Zacznij pisać, aby zobaczyć istniejące tagi.
+    empty: Nie ma jeszcze tagów. Dodaj tagi do inwentarza.
+    invalid: Podaj maksymalnie 12 tagów po maksymalnie 40 znaków.
+    filtered_by: Filtr tagu
+    clear_filter: Wyczyść filtr
+    inventories_count:
+      one: 1 inwentarz
+      few: '%{count} inwentarze'
+      many: '%{count} inwentarzy'
+      other: '%{count} inwentarza'
+  images:
+    title: Ilustracja inwentarza
+    upload: Prześlij obraz
+    remove: Usuń obraz
+    preview: Ilustracja inwentarza
+    help: Obraz trafia bezpośrednio do Cloudinary. Następnie zapisz ustawienia.
+    uploaded: Przesłano obraz. Zapisz zmiany, aby go zachować.
+    failed: Przesyłanie nie powiodło się. Spróbuj ponownie.
+    not_configured: Cloudinary nie jest skonfigurowane. Ustaw CLOUDINARY_CLOUD_NAME i CLOUDINARY_UPLOAD_PRESET na serwerze.
+    invalid_url: musi być bezpiecznym adresem obrazu na skonfigurowanym koncie Cloudinary
+  stats:
+    tab: Statystyki
+    title: Statystyki inwentarza
+    description: Agregacje pól przedmiotów wyliczane na bieżąco z bazy danych.
+    total: Łącznie przedmiotów
+    fields: Podsumowanie pól
+    filled: Uzupełnione wartości
+    summary: Podsumowanie
+    average: Średnia
+    range: Zakres
+    "yes": Tak
+    "no": Nie
+    empty: Włącz pola niestandardowe, aby wyświetlić statystyki.
+  oauth:
+    or: albo zaloguj się przez
+    continue_with: Kontynuuj przez %{provider}
+    not_configured: Logowanie społecznościowe nie jest jeszcze skonfigurowane na serwerze.
+    account: Bezpieczeństwo konta
+    connections: Połączone konta
+    connections_help: Loguj się przez Google lub Facebook albo połącz usługę z istniejącym kontem.
+    connected: Połączono
+    disconnected: Niepołączono
+    connect: Połącz
+    disconnect: Odłącz
+    disconnect_confirm: Odłączyć tego dostawcę od konta?
+    security_note: Istniejące konta nie są automatycznie łączone na podstawie e-maila. Zaloguj się hasłem, zanim połączysz dostawcę.
+    last_method: Nie można odłączyć jedynej dostępnej metody logowania.
+    not_connected: Ten dostawca nie jest połączony z kontem.
+    linked: Pomyślnie połączono dostawcę.
+    unlinked: Odłączono dostawcę.
+    already_linked: Ta tożsamość należy do innego konta albo powiązano już inny profil tego dostawcy.
+    use_link: Jesteś już zalogowany. Połącz dostawcę w zakładce Połączone konta.
+    email_exists: Konto z tym adresem e-mail już istnieje. Zaloguj się hasłem i połącz usługę w zakładce Połączone konta.
+    failed: Logowanie społecznościowe nie powiodło się. Spróbuj ponownie lub użyj hasła.
+  exports:
+    title: Eksport przedmiotów
+    csv: CSV
+    xlsx: Excel (.xlsx)
+    columns:
+      custom_id: Numer inwentarzowy
+      creator: Dodał użytkownik
+      created_at: Data utworzenia (UTC)
+  preferences:
+    title: Preferencje
+    description: Język i motyw zapisują się na koncie oraz są dostępne na innych urządzeniach. Goście mogą zapisać je w tej przeglądarce.
+    language: Język interfejsu
+    language_help: Tytuły inwentarzy i zawartość przedmiotów nie są tłumaczone.
+    theme: Motyw kolorystyczny
+    english: Angielski
+    polish: Polski
+    light: Jasny
+    dark: Ciemny
+    toggle_theme: Zmień motyw kolorystyczny
+    saved: Preferencje zostały zapisane.
+    invalid: Nieprawidłowa wartość preferencji.
+  pagination:
+    navigation: Nawigacja między stronami
+    page: Strona %{number}

@@ -1,0 +1,60 @@
+<div class="mb-4 d-flex justify-content-between align-items-start flex-wrap gap-3">
+  <div class="inventory-summary flex-grow-1">
+    <div class="eyebrow text-primary mb-2"><%= @inventory.category.localized_name %> · <%= t('table.items') %>: <%= @inventory.items_count %></div>
+    <h1 class="fw-bold mb-2"><%= @inventory.title %></h1>
+    <% if @inventory.description.present? %>
+      <div class="inventory-description mb-2"><%= inventory_comment_markdown(@inventory.description) %></div>
+    <% else %>
+      <p class="text-body-secondary mb-2"><%= t('inventories.no_description') %></p>
+    <% end %>
+    <% if @inventory.tags.any? %>
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <% @inventory.tags.each do |tag| %><%= link_to "##{tag.name}", search_path(tag: tag.name), class: 'inventory-tag-link' %><% end %>
+      </div>
+    <% end %>
+    <div class="small text-body-secondary"><%= t('table.creator') %>: <%= link_to @inventory.creator.username, user_path(@inventory.creator) %> · <%= @inventory.is_public? ? t('inventories.public_status') : t('inventories.private_status') %></div>
+  </div>
+  <% if @inventory.image_url.present? %>
+    <%= image_tag @inventory.image_url, class: 'inventory-cover rounded-3', alt: t('images.preview'), loading: 'lazy' %>
+  <% end %>
+  <% if @can_write %><%= link_to t('items.new'), new_inventory_item_path(@inventory), class: 'btn btn-primary' %><% end %>
+</div>
+<%= render 'shared/inventory_nav', inventory: @inventory, active: :items %>
+<section class="table-panel">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+    <div><h2 class="h5 fw-bold mb-1"><%= t('inventories.items') %></h2><p class="text-body-secondary small mb-0"><%= t('items.select_hint') if @can_write %></p></div>
+    <div class="d-flex align-items-center flex-wrap gap-2" aria-label="<%= t('exports.title') %>">
+      <span class="small text-body-secondary"><%= t('exports.title') %>:</span>
+      <%= link_to t('exports.csv'), export_inventory_path(@inventory, format: :csv), class: 'btn btn-sm btn-outline-primary', data: { turbo: false } %>
+      <%= link_to t('exports.xlsx'), export_inventory_path(@inventory, format: :xlsx), class: 'btn btn-sm btn-outline-primary', data: { turbo: false } %>
+    </div>
+  </div>
+  <% if params[:sort].present? %><div class="mb-3"><%= link_to t('hotfix.reset_sort'), inventory_path(@inventory), class: 'btn btn-sm btn-outline-secondary' %></div><% end %>
+  <%= form_with url: bulk_destroy_inventory_items_path(@inventory), method: :delete do |f| %>
+    <% if @can_write %><div class="d-flex gap-2 mb-3"><%= f.submit t('items.delete_selected'), class: 'btn btn-outline-danger btn-sm', data: { turbo_confirm: t('forms.confirm') } %></div><% end %>
+    <div class="table-responsive"><table class="table table-hover align-middle mb-0 inventory-items-table">
+      <thead><tr>
+        <% if @can_write %><th scope="col"><input type="checkbox" aria-label="<%= t('items.select_all') %>" onclick="document.querySelectorAll('.select-item').forEach(c => c.checked = this.checked)"></th><% end %>
+        <th scope="col" aria-sort="<%= table_sort_aria('custom_id') %>"><%= sortable_heading(t('table.item_id'), 'custom_id') %></th>
+        <% @fields.select(&:visible_in_table?).each do |field| %><th scope="col" title="<%= field.description %>" aria-sort="<%= table_sort_aria(field.column_name) %>"><%= sortable_heading(field.title, field.column_name) %></th><% end %>
+        <th scope="col" aria-sort="<%= table_sort_aria('creator') %>"><%= sortable_heading(t('table.creator'), 'creator') %></th><th scope="col" aria-sort="<%= table_sort_aria('created_at') %>"><%= sortable_heading(t('table.created'), 'created_at') %></th>
+      </tr></thead>
+      <tbody>
+        <% if @items.any? %>
+          <% @items.each do |item| %>
+            <tr>
+              <% if @can_write %><td><%= check_box_tag 'item_ids[]', item.id, false, class: 'form-check-input select-item', aria: { label: t('items.select_one', id: item.custom_id) } %></td><% end %>
+              <td class="item-id-cell"><%= link_to item.custom_id, (@can_write ? edit_inventory_item_path(@inventory, item) : inventory_item_path(@inventory, item)), class: 'text-decoration-none fw-semibold font-monospace' %></td>
+              <% @fields.select(&:visible_in_table?).each do |field| %>
+                <% value = item.public_send(field.column_name) %>
+                <td class="item-cell"><% if field.kind == 'bool' %><%= value.nil? ? '—' : (value ? '✓' : '✕') %><% elsif field.kind == 'number' %><%= inventory_number_display(value) %><% elsif field.kind == 'link' && value.present? && value.match?(/\Ahttps?:\/\//i) %><%= link_to truncate(value, length: 36), value, target: '_blank', rel: 'noopener noreferrer', title: value %><% else %><span class="item-cell-preview" title="<%= value %>"><%= truncate(value.to_s, length: 85).presence || '—' %></span><% end %></td>
+              <% end %>
+              <td><%= item.creator&.username || '—' %></td><td class="text-body-secondary small item-date-cell"><%= l(item.created_at, format: :short) %></td>
+            </tr>
+          <% end %>
+        <% else %><tr><td colspan="<%= @fields.count(&:visible_in_table?) + (@can_write ? 4 : 3) %>" class="empty-state"><%= t('items.empty') %></td></tr><% end %>
+      </tbody>
+    </table></div>
+  <% end %>
+  <%= render 'shared/pagination', slice: @items_page, page_key: :page %>
+</section>

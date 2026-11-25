@@ -1,0 +1,13 @@
+  <div class="d-flex align-items-center flex-wrap gap-3 mb-3" data-like-panel>
+    <span class="fw-semibold"><%= t('likes.count', count: @likes_count) %></span>
+    <% if logged_in? %>
+      <% if @liked %>
+        <%= button_to t('likes.unlike'), inventory_item_like_path(@inventory, @item), method: :delete, params: { return_to_edit: local_assigns[:editing] ? '1' : '0' }, form: { data: { item_like_form: true, turbo: false } }, class: 'btn btn-outline-primary btn-sm' %>
+      <% else %>
+        <%= button_to t('likes.like'), inventory_item_like_path(@inventory, @item), method: :post, params: { return_to_edit: local_assigns[:editing] ? '1' : '0' }, form: { data: { item_like_form: true, turbo: false } }, class: 'btn btn-primary btn-sm' %>
+      <% end %>
+    <% else %>
+      <span class="text-body-secondary small"><%= t('likes.login_hint') %></span>
+    <% end %>
+    <span class="text-danger small" role="alert" data-like-error hidden><%= t('hotfix.like_error') %></span>
+  </div>

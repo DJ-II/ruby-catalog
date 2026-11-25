@@ -1,0 +1,26 @@
+<%= render 'shared/errors', record: @item %>
+<%= form_with model: [@inventory, @item] do |f| %>
+  <% if @item.persisted? %><%= f.hidden_field :lock_version %><% end %>
+  <div class="small text-body-secondary mb-3"><%= t('table.creator') %>: <%= @item.creator&.username || current_user&.username || '—' %><% if @item.persisted? %> · <%= t('table.created') %>: <%= l(@item.created_at, format: :short) %><% end %></div>
+  <div class="mb-4"><%= f.label :custom_id, t('table.item_id'), class: 'form-label fw-semibold' %>
+    <%= f.text_field :custom_id, class: 'form-control font-monospace', placeholder: (@item.new_record? ? t('items.generated') : ''), maxlength: 200 %>
+    <div class="form-text"><%= t(@item.persisted? ? 'hotfix.id_edit_hint' : 'items.id_hint') %><% if @id_example.present? && @item.new_record? %> <%= t('items.id_example') %> <strong class="font-monospace"><%= @id_example %></strong>.<% end %></div>
+  </div>
+  <% @fields.each do |field| %>
+    <% column = field.column_name %>
+    <div class="mb-4">
+      <% if field.kind == 'bool' %>
+        <div class="form-check form-switch"><%= f.check_box column, class: 'form-check-input' %><%= f.label column, field.title, class: 'form-check-label fw-semibold' %></div>
+      <% else %>
+        <%= f.label column, field.title, class: 'form-label fw-semibold' %>
+        <% if field.kind == 'text' %><%= f.text_area column, rows: 4, class: 'form-control', aria: { describedby: (field.description.present? ? "hint-#{column}" : nil) } %>
+        <% elsif field.kind == 'number' %><%= f.number_field column, value: (@item.public_send(column).nil? ? nil : inventory_number_display(@item.public_send(column), locale: :en)), step: '0.001', class: 'form-control', inputmode: 'decimal', aria: { describedby: (field.description.present? ? "hint-#{column}" : nil) } %>
+        <% elsif field.kind == 'link' %><%= f.url_field column, class: 'form-control', maxlength: 2048, placeholder: 'https://...', aria: { describedby: (field.description.present? ? "hint-#{column}" : nil) } %>
+        <% else %><%= f.text_field column, class: 'form-control', maxlength: 255, aria: { describedby: (field.description.present? ? "hint-#{column}" : nil) } %>
+        <% end %>
+      <% end %>
+      <% if field.description.present? %><div class="form-text" id="hint-<%= column %>"><%= field.description %></div><% end %>
+    </div>
+  <% end %>
+  <div class="d-flex gap-2 flex-wrap"><%= f.submit t('forms.save'), class: 'btn btn-primary px-4' %><%= link_to t('forms.cancel'), inventory_path(@inventory), class: 'btn btn-outline-secondary' %></div>
+<% end %>

@@ -1,0 +1,15 @@
+en:
+  categories:
+    equipment: Equipment
+    furniture: Furniture
+    book: Book
+    books: Books
+    document: Document
+    documents: Documents
+    other: Other
+  catalog:
+    inventory_sections: Inventory sections
+    inventory_example: Company laptops
+    item_count:
+      one: "%{count} item"
+      other: "%{count} items"

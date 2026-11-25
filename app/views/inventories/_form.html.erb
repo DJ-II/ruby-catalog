@@ -1,0 +1,38 @@
+<%= render 'shared/errors', record: @inventory %>
+<%= form_with model: @inventory, data: (@inventory.persisted? ? { inventory_autosave: true } : {}) do |f| %>
+  <% if @inventory.persisted? %><%= f.hidden_field :lock_version %><% end %>
+  <div class="mb-3"><%= f.label :title, t('inventories.title'), class: 'form-label fw-semibold' %><%= f.text_field :title, class: 'form-control', required: true, maxlength: 150, placeholder: t('catalog.inventory_example') %></div>
+  <div class="mb-3"><%= f.label :description, t('inventories.description'), class: 'form-label fw-semibold' %><%= f.text_area :description, class: 'form-control', rows: 5, maxlength: 20000 %></div>
+  <div class="mb-3">
+    <%= label_tag :inventory_tag_names, t('tags.label'), class: 'form-label fw-semibold' %>
+    <%= text_field_tag 'inventory[tag_names]', @tag_names_input || @inventory.tags.map(&:name).join(', '),
+                       id: 'inventory_tag_names', class: 'form-control', placeholder: t('tags.placeholder'),
+                       data: { tag_input: true, suggestions_url: tag_suggestions_path }, autocomplete: 'off' %>
+    <div class="form-text"><%= t('tags.help') %></div>
+  </div>
+  <div class="mb-3">
+    <%= f.label :image_url, t('images.title'), class: 'form-label fw-semibold' %>
+    <div class="cloudinary-uploader" data-cloudinary-uploader data-success-label="<%= t('images.uploaded') %>" data-error-label="<%= t('images.failed') %>" data-preview-label="<%= t('images.preview') %>" data-cloud-name="<%= ENV.fetch('CLOUDINARY_CLOUD_NAME', '') %>" data-upload-preset="<%= ENV.fetch('CLOUDINARY_UPLOAD_PRESET', '') %>">
+      <%= f.hidden_field :image_url, data: { cloudinary_input: true } %>
+      <div class="image-preview mb-2" data-cloudinary-preview>
+        <% if @inventory.image_url.present? %>
+          <%= image_tag @inventory.image_url, class: 'inventory-cover-preview rounded-3', alt: t('images.preview') %>
+        <% end %>
+      </div>
+      <% if ENV['CLOUDINARY_CLOUD_NAME'].present? && ENV['CLOUDINARY_UPLOAD_PRESET'].present? %>
+        <div class="d-flex flex-wrap gap-2">
+          <button type="button" class="btn btn-outline-primary" data-cloudinary-open><%= t('images.upload') %></button>
+          <button type="button" class="btn btn-outline-secondary" data-cloudinary-remove <%= 'hidden' if @inventory.image_url.blank? %>><%= t('images.remove') %></button>
+        </div>
+        <div class="form-text" data-cloudinary-status role="status"><%= t('images.help') %></div>
+      <% else %>
+        <p class="form-text"><%= t('images.not_configured') %></p>
+      <% end %>
+    </div>
+  </div>
+  <div class="mb-3"><%= f.label :category_id, t('table.category'), class: 'form-label fw-semibold' %><%= f.collection_select :category_id, @categories, :id, :localized_name, { prompt: t('inventories.pick_category') }, { class: 'form-select', required: true } %></div>
+  <div class="form-check form-switch mb-2"><%= f.check_box :is_public, class: 'form-check-input' %><%= f.label :is_public, t('inventories.public'), class: 'form-check-label fw-semibold' %></div>
+  <p class="small text-body-secondary mb-4"><%= t('inventories.public_help') %></p>
+  <% if @inventory.persisted? %><%= render 'shared/autosave_status', reload_url: edit_inventory_path(@inventory) %><% end %>
+  <div class="d-flex flex-wrap gap-2"><%= f.submit t('forms.save'), class: 'btn btn-primary px-4' %><%= link_to t('forms.cancel'), @inventory.persisted? ? inventory_path(@inventory) : inventories_path, class: 'btn btn-outline-secondary' %></div>
+<% end %>

@@ -1,0 +1,7 @@
+<div class="d-flex justify-content-between flex-wrap gap-3 mb-4"><div><div class="eyebrow text-primary mb-2"><%= link_to @inventory.title, inventory_path(@inventory), class: 'text-decoration-none' %></div><h1 class="h2 fw-bold mb-1 font-monospace item-detail-value"><%= @item.custom_id %></h1><span class="text-body-secondary small"><%= t('table.created') %>: <%= l(@item.created_at, format: :long) %></span></div><% if can_write?(@inventory) %><%= link_to t('items.edit'), edit_inventory_item_path(@inventory, @item), class: 'btn btn-primary align-self-start' %><% end %></div>
+<section class="table-panel mb-4">
+  <%= render 'items/likes', editing: false %>
+  <dl class="row mb-0 item-detail-values"><dt class="col-sm-4"><%= t('table.item_id') %></dt><dd class="col-sm-8 font-monospace"><%= @item.custom_id %></dd>
+  <dt class="col-sm-4"><%= t('table.creator') %></dt><dd class="col-sm-8"><%= @item.creator&.username || '—' %></dd>
+  <% @fields.each do |field| %><dt class="col-sm-4"><%= field.title %></dt><dd class="col-sm-8"><% value = @item.public_send(field.column_name) %><% if field.kind == 'bool' %><%= value.nil? ? '—' : (value ? '✓' : '✕') %><% elsif field.kind == 'number' %><%= inventory_number_display(value) %><% elsif field.kind == 'link' && value.present? && value.match?(/\Ahttps?:\/\//i) %><%= link_to value, value, target: '_blank', rel: 'noopener noreferrer' %><% else %><%= simple_format(value.to_s) %><% end %></dd><% end %>
+</dl></section>

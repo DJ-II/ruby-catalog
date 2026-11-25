@@ -1,0 +1,56 @@
+<div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-4">
+  <div>
+    <div class="eyebrow text-primary mb-2"><%= link_to @inventory.title, inventory_path(@inventory), class: 'text-decoration-none' %></div>
+    <h1 class="h2 fw-bold mb-1"><%= t('ids.title') %></h1>
+    <p class="text-body-secondary mb-0"><%= t('ids.description') %></p>
+  </div>
+</div>
+<%= render 'shared/inventory_nav', inventory: @inventory, active: :ids %>
+<% default_patterns = CustomIdFormat::DEFAULT_PATTERNS %>
+<% help_messages = CustomIdFormat::KINDS.index_with { |kind| t("ids.help_text.#{kind}") } %>
+<% error_messages = %w[date_format number_format empty_pattern guid_format unknown_kind generated_too_long].index_with { |key| t("ids.errors.#{key}", count: CustomIdFormat::MAX_ID_LENGTH) } %>
+<div data-id-builder
+     data-defaults="<%= default_patterns.to_json %>"
+     data-help-messages="<%= help_messages.to_json %>"
+     data-error-messages="<%= error_messages.to_json %>"
+     data-sample-sequence="<%= @inventory.items.maximum(:sequence_number).to_i + 1 %>"
+     data-sample-date="<%= Time.current.iso8601 %>"
+     data-max-parts="<%= CustomIdFormat::MAX_PARTS %>">
+  <section class="id-preview-panel mb-4" aria-live="polite">
+    <div class="small fw-semibold text-body-secondary text-uppercase mb-2"><%= t('ids.preview') %></div>
+    <div class="id-preview-value font-monospace" data-id-preview><%= @preview || '—' %></div>
+    <div class="small mt-2 text-body-secondary" data-id-preview-message><%= t('ids.preview_note') %></div>
+  </section>
+  <%= form_with url: inventory_id_parts_path(@inventory), method: :patch, data: { inventory_autosave: true } do |f| %>
+    <%= hidden_field_tag :lock_version, @inventory.lock_version %>
+    <section class="id-editor-panel mb-3">
+      <div class="d-flex justify-content-between flex-wrap gap-2 align-items-center mb-3">
+        <div><h2 class="h5 fw-bold mb-1"><%= t('ids.elements') %></h2><p class="small text-body-secondary mb-0"><%= t('ids.reorder_help') %></p></div>
+        <span class="badge text-bg-light border"><span data-id-part-count><%= @parts.length %></span> / <%= CustomIdFormat::MAX_PARTS %></span>
+      </div>
+      <div class="id-parts-list" data-id-parts>
+        <% @parts.each_with_index do |part, index| %>
+          <%= render 'inventory_id_parts/part', part: part, key: "existing_#{index}" %>
+        <% end %>
+      </div>
+      <p class="text-body-secondary small mt-3 mb-0" data-empty-id-parts <%= 'hidden' if @parts.any? %>><%= t('ids.empty') %></p>
+      <div class="d-flex flex-wrap gap-2 align-items-center mt-4">
+        <label class="visually-hidden" for="new-id-kind"><%= t('ids.element_type') %></label>
+        <select class="form-select id-kind-picker" id="new-id-kind" data-new-id-kind>
+          <% CustomIdFormat::KINDS.each do |kind| %><option value="<%= kind %>"><%= t("ids.types.#{kind}") %></option><% end %>
+        </select>
+        <button type="button" class="btn btn-outline-primary" data-add-id-part><%= t('ids.add') %></button>
+      </div>
+    </section>
+    <div class="id-trash mb-4" data-id-trash><span aria-hidden="true">⌫</span> <%= t('ids.trash') %></div>
+    <p class="form-text mb-4"><%= t('ids.outside_hint') %></p>
+    <%= render 'shared/autosave_status', reload_url: edit_inventory_id_parts_path(@inventory) %>
+    <div class="d-flex gap-2 flex-wrap">
+      <%= f.submit t('forms.save'), class: 'btn btn-primary px-4', data: { id_save: true } %>
+      <%= link_to t('forms.cancel'), inventory_path(@inventory), class: 'btn btn-outline-secondary' %>
+    </div>
+  <% end %>
+  <template data-id-part-template>
+    <%= render 'inventory_id_parts/part', part: InventoryIdPart.new(kind: 'fixed', pattern: 'INV-', position: 0), key: '__KEY__' %>
+  </template>
+</div>

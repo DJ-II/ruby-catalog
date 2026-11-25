@@ -1,0 +1,10 @@
+<div class="autosave-status mb-3" role="status" aria-live="polite">
+  <span data-autosave-status
+        data-saved="<%= t('autosave.saved') %>"
+        data-pending="<%= t('autosave.pending') %>"
+        data-saving="<%= t('autosave.saving') %>"
+        data-conflict="<%= t('autosave.conflict') %>"
+        data-invalid="<%= t('autosave.invalid') %>"
+        data-failed="<%= t('autosave.failed') %>"><%= t('autosave.inactive') %></span>
+  <%= link_to t('autosave.reload'), reload_url, class: 'ms-2 autosave-reload', data: { autosave_reload: true }, hidden: true %>
+</div>

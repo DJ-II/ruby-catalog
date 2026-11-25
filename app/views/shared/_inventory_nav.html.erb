@@ -1,0 +1,13 @@
+<nav aria-label="<%= t('catalog.inventory_sections') %>" class="mb-4">
+  <ul class="nav nav-tabs inventory-tabs flex-wrap">
+    <li class="nav-item"><%= link_to t('inventories.items'), inventory_path(inventory), class: "nav-link #{'active' if active == :items}" %></li>
+    <li class="nav-item"><%= link_to t('comments.tab'), inventory_comments_path(inventory), class: "nav-link #{'active' if active == :discussion}" %></li>
+    <li class="nav-item"><%= link_to t('stats.tab'), statistics_inventory_path(inventory), class: "nav-link #{'active' if active == :statistics}" %></li>
+    <% if can_manage?(inventory) %>
+      <li class="nav-item"><%= link_to t('ids.tab'), edit_inventory_id_parts_path(inventory), class: "nav-link #{'active' if active == :ids}" %></li>
+      <li class="nav-item"><%= link_to t('inventories.fields'), edit_inventory_fields_path(inventory), class: "nav-link #{'active' if active == :fields}" %></li>
+      <li class="nav-item"><%= link_to t('inventories.access'), inventory_accesses_path(inventory), class: "nav-link #{'active' if active == :access}" %></li>
+      <li class="nav-item"><%= link_to t('inventories.settings'), edit_inventory_path(inventory), class: "nav-link #{'active' if active == :settings}" %></li>
+    <% end %>
+  </ul>
+</nav>

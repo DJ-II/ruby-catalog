@@ -1,0 +1,22 @@
+<div class="mb-4">
+  <div class="eyebrow text-primary mb-2"><%= t('users.profile') %></div>
+  <h1 class="fw-bold mb-2"><%= t('preferences.title') %></h1>
+  <p class="text-body-secondary"><%= t('preferences.description') %></p>
+</div>
+<section class="form-panel mx-auto" style="max-width: 720px">
+  <%= form_with url: account_preferences_path, method: :patch, scope: :preferences, data: { turbo: false } do |f| %>
+    <div class="mb-4">
+      <%= f.label :locale, t('preferences.language'), class: 'form-label fw-semibold' %>
+      <%= f.select :locale, options_for_select([[t('preferences.english'), 'en'], [t('preferences.polish'), 'pl']], current_user.locale), {}, class: 'form-select' %>
+      <p class="form-text"><%= t('preferences.language_help') %></p>
+    </div>
+    <div class="mb-4">
+      <%= f.label :theme, t('preferences.theme'), class: 'form-label fw-semibold' %>
+      <%= f.select :theme, options_for_select([[t('preferences.light'), 'light'], [t('preferences.dark'), 'dark']], current_user.theme), {}, class: 'form-select' %>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+      <%= f.submit t('forms.save'), class: 'btn btn-primary' %>
+      <%= link_to t('forms.cancel'), user_path(current_user), class: 'btn btn-outline-secondary' %>
+    </div>
+  <% end %>
+</section>
