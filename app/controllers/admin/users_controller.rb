@@ -52,10 +52,10 @@ module Admin
       return redirect_to admin_users_path, alert: t('flash.forbidden') if result == :invalid
       target = @user.id == current_user.id && %i[blocked demoted].include?(result) ? root_path : admin_users_path
       if %i[already_blocked already_active already_admin not_admin].include?(result)
-        flash[:info] = t("hotfix.admin.#{result}")
+        flash[:info] = t("interface.admin.#{result}")
         redirect_to target
       else
-        redirect_to target, notice: t("hotfix.admin.#{result}")
+        redirect_to target, notice: t("interface.admin.#{result}")
       end
     end
 

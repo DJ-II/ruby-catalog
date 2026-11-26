@@ -12,13 +12,11 @@ class CreateInventoryhubCore < ActiveRecord::Migration[8.1]
     end
     add_index :users, 'lower(email)', unique: true, name: 'index_users_on_lower_email'
     add_index :users, 'lower(username)', unique: true, name: 'index_users_on_lower_username'
-
     create_table :categories do |t|
       t.string :name, null: false
       t.timestamps
     end
     add_index :categories, :name, unique: true
-
     create_table :inventories do |t|
       t.references :creator, null: false, foreign_key: { to_table: :users }
       t.references :category, null: false, foreign_key: true
@@ -34,7 +32,6 @@ class CreateInventoryhubCore < ActiveRecord::Migration[8.1]
     add_index :inventories, [:created_at, :id]
     add_index :inventories, :items_count
     add_index :inventories, "to_tsvector('simple', coalesce(title, '') || ' ' || coalesce(description, ''))", using: :gin, name: 'idx_inventories_search'
-
     create_table :inventory_fields do |t|
       t.references :inventory, null: false, foreign_key: true
       t.string :kind, null: false
@@ -50,14 +47,12 @@ class CreateInventoryhubCore < ActiveRecord::Migration[8.1]
     add_check_constraint :inventory_fields, "kind IN ('string', 'text', 'number', 'link', 'bool')", name: 'inventory_fields_kind_valid'
     add_check_constraint :inventory_fields, 'slot BETWEEN 1 AND 3', name: 'inventory_fields_slot_valid'
     add_check_constraint :inventory_fields, "NOT active OR length(btrim(title)) > 0", name: 'inventory_fields_active_title_required'
-
     create_table :inventory_accesses do |t|
       t.references :inventory, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
       t.timestamps
     end
     add_index :inventory_accesses, [:inventory_id, :user_id], unique: true
-
     create_table :items do |t|
       t.references :inventory, null: false, foreign_key: true
       t.references :created_by, foreign_key: { to_table: :users }

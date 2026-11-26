@@ -1,6 +1,10 @@
 <article class="discussion-post" data-comment-id="<%= comment.id %>">
   <div class="d-flex align-items-baseline justify-content-between gap-2 flex-wrap mb-2">
-    <%= link_to comment.user.username, user_path(comment.user), class: 'fw-semibold text-decoration-none' %>
+    <% if comment.user %>
+      <%= link_to comment.user.username, user_path(comment.user), class: 'fw-semibold text-decoration-none' %>
+    <% else %>
+      <span class="fw-semibold text-body-secondary"><%= t('account_settings.deleted_user') %></span>
+    <% end %>
     <time class="text-body-secondary small" datetime="<%= comment.created_at.iso8601 %>"><%= l(comment.created_at, format: :long) %></time>
   </div>
   <div class="discussion-markdown"><%= inventory_comment_markdown(comment.body) %></div>

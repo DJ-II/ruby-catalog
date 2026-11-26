@@ -9,7 +9,6 @@ module Account
     def destroy
       provider = params[:provider].to_s
       return redirect_to account_connections_path, alert: t('oauth.failed') unless OauthIdentity::PROVIDERS.include?(provider)
-
       outcome = current_user.with_lock do
         identity = current_user.oauth_identities.find_by(provider: provider)
         if identity.nil?
@@ -21,7 +20,6 @@ module Account
           :unlinked
         end
       end
-
       if outcome == :unlinked
         redirect_to account_connections_path, notice: t('oauth.unlinked')
       else

@@ -1,8 +1,90 @@
+---
 en:
+  account_settings:
+    title: Account settings
+    username_saved: Username updated.
+    delete_title: Delete account
+    delete_warning: Your account, your own inventories and their contents will be
+      permanently deleted. This cannot be undone.
+    delete_retained: Items and comments in other users' inventories will remain without
+      a link to your account. Uploaded images are not automatically removed from Cloudinary.
+      Avoid including personal data in shared content.
+    current_password: Current password
+    confirmation: Type DELETE to confirm
+    confirmation_invalid: Type DELETE exactly to confirm deletion.
+    delete_button: Delete my account
+    deleted: Your account has been deleted.
+    deleted_user: Deleted user
+    oauth_reauth_help: Confirm your identity with a connected account before deleting
+      your Catalog account.
+    reauth_provider: Confirm with %{provider}
+    reauth_verified: Identity confirmed. You have five minutes to confirm account
+      deletion.
+    reauth_required: Confirm your identity with your password or a connected account
+      first.
+    reauth_mismatch: This external account is not connected to your Catalog account.
+    reauth_unavailable: No verification method is currently available. Contact the
+      application administrator.
+    privacy: Privacy policy
+  privacy_policy:
+    purpose:
+      title: Purpose
+      body: Catalog is an educational inventory management application. Account data
+        is used to provide authentication, collaboration and inventory management.
+    data:
+      title: Data we store
+      body: Catalog stores usernames, email addresses, password hashes where applicable,
+        external account identifiers, preferences, inventories, items, comments and
+        likes. OAuth providers may supply a name and email. We do not store provider
+        access tokens as part of the account record.
+    visibility:
+      title: Public content
+      body: Inventories, items, discussions and profile names are available to visitors.
+        Private write access restricts editing, not viewing. Do not include confidential
+        or personal information in inventories or discussions.
+    providers:
+      title: External services
+      body: Render hosts the application and its PostgreSQL database. Cloudinary stores
+        uploaded images. Google and GitHub provide optional sign-in under their own
+        privacy policies. These services may process technical and account information
+        needed to deliver their services.
+    cookies:
+      title: Cookies
+      body: Catalog uses cookies for sessions, security, language and theme preferences.
+        The application does not intentionally use advertising or analytics cookies.
+    deletion:
+      title: Account deletion
+      body: You can change your username or delete your account in Account settings
+        after confirming your identity. Deletion removes your account, owned inventories,
+        access grants, likes and connected account records. Contributions to other
+        inventories remain with the author link removed; their contents are not automatically
+        redacted. Cloudinary files are not automatically deleted. Hosting backups
+        and external provider authorizations may remain subject to their own retention
+        policies.
+    contact:
+      title: Contact and data requests
+      body: For questions about data, image removal or retained content, contact the
+        project administrator using the contact channel provided with the project.
+        The application operator should supply a public contact address before wider
+        release.
+  categories:
+    equipment: Equipment
+    furniture: Furniture
+    book: Book
+    books: Books
+    document: Document
+    documents: Documents
+    other: Other
+  catalog:
+    inventory_sections: Inventory sections
+    inventory_example: Company laptops
+    item_count:
+      one: "%{count} item"
+      other: "%{count} items"
   time:
     formats:
-      short: '%d %b %Y %H:%M'
-      long: '%B %d, %Y at %H:%M'
+      short: "%d %b %Y %H:%M"
+      long: "%B %d, %Y at %H:%M"
   navigation:
     explore: Explore
     search: Search inventories and items
@@ -14,10 +96,9 @@ en:
     logout: Log out
     mobile: Mobile navigation
   home:
-    status: Version 0.8 · Integration & bug fixes
     title: Organize everything. Find anything.
-    description: Flexible inventories for equipment, books, documents and more. Define your own fields, invite collaborators and keep
-      your items in one place.
+    description: Flexible inventories for equipment, books, documents and more. Define
+      your own fields, invite collaborators and keep your items in one place.
     explore: Explore inventories
     readonly: Guests can browse inventories and items.
     latest: Latest inventories
@@ -80,7 +161,8 @@ en:
     description: Description
     pick_category: Choose a category
     public: All authenticated users can add or edit items
-    public_help: If disabled, only you, admins and users in the access list may modify items. Everyone can still read items.
+    public_help: If disabled, only you, admins and users in the access list may modify
+      items. Everyone can still read items.
     public_status: Public write access
     private_status: Restricted write access
     items: Items
@@ -96,17 +178,18 @@ en:
     delete_selected: Delete selected
     empty: This inventory has no items yet.
     generated: Leave empty to generate an inventory number
-    id_hint: Leave blank to generate the number automatically. Entering a number manually requires matching the currently configured
-      custom ID format.
-    select_hint: Select rows below to delete multiple items. Open a number to edit an item.
+    id_hint: Leave blank to generate the number automatically. Entering a number manually
+      requires matching the currently configured custom ID format.
+    select_hint: Select rows below to delete multiple items. Open a number to edit
+      an item.
     id_example: 'Example generated number:'
     select_all: Select all visible items
     select_one: Select item %{id}
   fields:
     order: Order
     title: Custom fields
-    description: Configure the 15 typed field slots and drag rows to reorder them. Renaming or reordering fields preserves existing
-      item values.
+    description: Configure the 15 typed field slots and drag rows to reorder them.
+      Renaming or reordering fields preserves existing item values.
     enabled: Enable
     type: Type
     label: Field title
@@ -122,7 +205,8 @@ en:
     table_field: 'Display %{type} #%{slot} in the item table'
   access:
     title: Write access
-    description: Add specific registered users who can add, edit and remove items. Only the owner and admins can change inventory settings.
+    description: Add specific registered users who can add, edit and remove items.
+      Only the owner and admins can change inventory settings.
     add: Grant access
     placeholder: Type a username or email (suggestions appear)
     allowed: Users with access
@@ -133,7 +217,8 @@ en:
     select_user: Select user %{username}
   admin:
     title: User management
-    hint: Select one user, then apply an operation. You can remove your own admin rights.
+    hint: Select one user, then apply an operation. You can remove your own admin
+      rights.
     search: Search username or email
     block: Block
     unblock: Unblock
@@ -165,18 +250,22 @@ en:
     duplicate_id: An item with this inventory number already exists.
     user_not_found: No eligible user matches that username or email address.
     fields_title_required: Active fields must have a title.
-    invalid_id_format: does not match the current custom ID format. Open the Custom ID tab to check the rules.
+    invalid_id_format: does not match the current custom ID format. Open the Custom
+      ID tab to check the rules.
   footer:
     stage: Rails · PostgreSQL · Bootstrap · Render
   ids:
     tab: Custom ID
     title: Custom inventory numbers
-    description: Build the unique number generated for each new item. Existing item numbers never change when you change this template.
+    description: Build the unique number generated for each new item. Existing item
+      numbers never change when you change this template.
     preview: Example
-    preview_note: An illustrative sample. Actual random values and sequence numbers are generated at item creation.
+    preview_note: An illustrative sample. Actual random values and sequence numbers
+      are generated at item creation.
     manual_save: Save changes manually
     elements: ID elements
-    reorder_help: Drag the grip to reorder, or focus it and press ↑ / ↓. Add up to 15 elements.
+    reorder_help: Drag the grip to reorder, or focus it and press ↑ / ↓. Add up to
+      15 elements.
     add: Add element
     empty: No elements defined. The default INV-000001 sequence format will be used.
     trash: Drop an element here to remove it, or use the × button on the element.
@@ -195,17 +284,25 @@ en:
       datetime: Date/time
       sequence: Sequence
     help_text:
-      fixed: Any constant Unicode text or emoji, such as COMP- or 📚_. It appears exactly as entered.
-      random20: Random integer from 0 to 1,048,575. Use X5 for five-digit uppercase hexadecimal (A7E3A) or D7 for padded decimal; D
-        or X omits leading padding.
-      random32: Random integer from 0 to 4,294,967,295. Use X8 for eight-digit uppercase hexadecimal (E74FA329), or D10 for padded decimal.
-      random6: Random integer from 0 to 999999. D6 always yields six digits, with leading zeros when needed. D1 and X5 are also supported.
-      random9: Random integer from 0 to 999999999. D9 yields nine digits, including leading zeros. D1 and X8 are also supported.
-      guid: Use D for the hyphenated form, N for 32 hex digits without hyphens, B for braces or P for parentheses.
-      datetime: Use yyyy, yy, MM, dd, ddd, HH, mm, ss and separators such as -, _, /, space, colon or period. Example yyyy-MM-dd.
-      sequence: The next value is max(existing sequence_number) + 1 when the item is created. Use D3 for 001, D6 for 000001, X5 for
-        hex, or D for an unpadded number.
-    outside_hint: Dropping an ID element outside the list removes it. You can also use the × button or the removal zone.
+      fixed: "Any constant Unicode text or emoji, such as COMP- or \U0001F4DA_. It
+        appears exactly as entered."
+      random20: Random integer from 0 to 1,048,575. Use X5 for five-digit uppercase
+        hexadecimal (A7E3A) or D7 for padded decimal; D or X omits leading padding.
+      random32: Random integer from 0 to 4,294,967,295. Use X8 for eight-digit uppercase
+        hexadecimal (E74FA329), or D10 for padded decimal.
+      random6: Random integer from 0 to 999999. D6 always yields six digits, with
+        leading zeros when needed. D1 and X5 are also supported.
+      random9: Random integer from 0 to 999999999. D9 yields nine digits, including
+        leading zeros. D1 and X8 are also supported.
+      guid: Use D for the hyphenated form, N for 32 hex digits without hyphens, B
+        for braces or P for parentheses.
+      datetime: Use yyyy, yy, MM, dd, ddd, HH, mm, ss and separators such as -, _,
+        /, space, colon or period. Example yyyy-MM-dd.
+      sequence: The next value is max(existing sequence_number) + 1 when the item
+        is created. Use D3 for 001, D6 for 000001, X5 for hex, or D for an unpadded
+        number.
+    outside_hint: Dropping an ID element outside the list removes it. You can also
+      use the × button or the removal zone.
     errors:
       too_many: The ID may contain at most %{count} elements.
       generated_too_long: Generated inventory number exceeds %{count} characters.
@@ -214,7 +311,8 @@ en:
       part_too_long: An ID element cannot exceed %{count} characters.
       number_format: Use D, D3, D6, X5, or X8 (width 1–99).
       guid_format: GUID format must be N, D, B, or P.
-      date_format: 'Use yyyy, yy, MM, dd, ddd, HH, mm, ss and separators - _ . / : or space.'
+      date_format: 'Use yyyy, yy, MM, dd, ddd, HH, mm, ss and separators - _ . / :
+        or space.'
       invalid_list: Invalid ID element list.
       invalid_element: Invalid ID element.
       invalid_order: Invalid ID element ordering.
@@ -224,7 +322,8 @@ en:
     saved: All changes saved
     pending: Unsaved changes
     saving: Saving changes…
-    conflict: Another editor changed this inventory. Your changes were not overwritten. Copy them before reloading.
+    conflict: Another editor changed this inventory. Your changes were not overwritten.
+      Copy them before reloading.
     invalid: Cannot save these settings
     failed: Save failed. Retrying automatically.
     reload: Reload current version
@@ -261,7 +360,7 @@ en:
     clear_filter: Clear filter
     inventories_count:
       one: 1 inventory
-      other: '%{count} inventories'
+      other: "%{count} inventories"
   images:
     title: Inventory illustration
     upload: Upload image
@@ -270,21 +369,22 @@ en:
     help: Image files are uploaded directly to Cloudinary; save settings afterwards.
     uploaded: Image uploaded. Save changes to keep it.
     failed: Upload failed. Try again.
-    not_configured: Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME and CLOUDINARY_UPLOAD_PRESET on the server to enable direct
-      uploads.
+    not_configured: Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME and CLOUDINARY_UPLOAD_PRESET
+      on the server to enable direct uploads.
     invalid_url: must be a secure image URL from the configured Cloudinary account
   stats:
     tab: Stats
     title: Inventory statistics
-    description: Live aggregates of the typed item values; only enabled custom fields are included.
+    description: Live aggregates of the typed item values; only enabled custom fields
+      are included.
     total: Total items
     fields: Field summaries
     filled: Values filled
     summary: Summary
     average: Average
     range: Range
-    "yes": "Yes"
-    "no": "No"
+    'yes': 'Yes'
+    'no': 'No'
     empty: Enable custom fields to see their statistics.
   oauth:
     or: or continue with
@@ -292,20 +392,25 @@ en:
     not_configured: Social sign-in has not been configured on this server.
     account: Account security
     connections: Connected accounts
-    connections_help: Sign in with Google or GitHub, or connect a provider to your existing account.
+    connections_help: Sign in with Google or GitHub, or connect a provider to your
+      existing account.
     connected: Connected
     disconnected: Not connected
     connect: Connect
     disconnect: Disconnect
     disconnect_confirm: Disconnect this provider from your account?
-    security_note: Existing accounts are never automatically merged based on email. Log in with your password before connecting a provider.
+    security_note: Existing accounts are never automatically merged based on email.
+      Log in with your password before connecting a provider.
     last_method: You cannot disconnect your only available sign-in method.
     not_connected: This provider is not connected to your account.
     linked: The provider was connected successfully.
     unlinked: The provider was disconnected.
-    already_linked: This provider identity is linked to another account, or you have already linked a different identity from that provider.
-    use_link: You are already logged in. Use Connected accounts to connect another provider.
-    email_exists: An account with this email already exists. Sign in with its password, then connect the provider in Connected accounts.
+    already_linked: This provider identity is linked to another account, or you have
+      already linked a different identity from that provider.
+    use_link: You are already logged in. Use Connected accounts to connect another
+      provider.
+    email_exists: An account with this email already exists. Sign in with its password,
+      then connect the provider in Connected accounts.
     failed: Social sign-in could not be completed. Please try again or use your password.
   exports:
     title: Export items
@@ -317,7 +422,8 @@ en:
       created_at: Created at (UTC)
   preferences:
     title: Preferences
-    description: Your language and theme are saved to your account and follow you between devices. Guests can save them in this browser.
+    description: Your language and theme are saved to your account and follow you
+      between devices. Guests can save them in this browser.
     language: Interface language
     language_help: Inventory titles and item values are not translated.
     theme: Color theme
@@ -331,3 +437,23 @@ en:
   pagination:
     navigation: Pagination
     page: Page %{number}
+  activerecord:
+    attributes:
+      item:
+        custom_id: Inventory number
+  interface:
+    reset_sort: Reset sort
+    all_roles: All roles
+    all_statuses: All statuses
+    id_edit_hint: Enter a non-empty inventory number matching the current custom ID
+      format.
+    like_error: Could not update the like. Please try again.
+    admin:
+      already_blocked: User is already blocked.
+      already_active: User is already active.
+      already_admin: User is already an administrator.
+      not_admin: User is not an administrator.
+      blocked: User has been blocked.
+      unblocked: User has been unblocked.
+      promoted: Administrator access has been granted.
+      demoted: Administrator access has been removed.

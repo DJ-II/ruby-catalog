@@ -1,0 +1,12 @@
+<article class="form-panel mx-auto" style="max-width:850px">
+  <h1 class="h2 mb-4"><%= t('account_settings.privacy') %></h1>
+  <% %w[purpose data visibility providers cookies deletion contact].each do |section| %>
+    <section class="mb-4">
+      <h2 class="h5"><%= t("privacy_policy.#{section}.title") %></h2>
+      <p><%= t("privacy_policy.#{section}.body") %></p>
+    </section>
+  <% end %>
+  <% if @contact_email %>
+    <p><%= mail_to @contact_email %></p>
+  <% end %>
+</article>

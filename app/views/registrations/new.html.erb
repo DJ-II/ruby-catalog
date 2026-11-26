@@ -10,4 +10,5 @@
   <% end %>
   <%= render 'shared/oauth_buttons', intent: 'login' %>
   <p class="mt-3 text-body-secondary"><%= t('auth.already') %> <%= link_to t('auth.login'), login_path %></p>
+  <p class="small mb-0"><%= link_to t('account_settings.privacy'), privacy_path %></p>
 </div>

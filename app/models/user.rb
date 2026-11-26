@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :inventories, foreign_key: :creator_id, dependent: :destroy, inverse_of: :creator
   has_many :items, foreign_key: :created_by_id, dependent: :nullify, inverse_of: :creator
   has_many :inventory_accesses, dependent: :delete_all
-  has_many :inventory_comments, dependent: :delete_all
+  has_many :inventory_comments, dependent: :nullify
   has_many :item_likes, dependent: :delete_all
   has_many :writable_inventories, through: :inventory_accesses, source: :inventory
 

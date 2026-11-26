@@ -59,7 +59,6 @@ function partExample(kind, pattern, sequence, date, errors) {
 
 function nativeReorder(list, rowSelector, handleSelector, refresh, removeOutside = false) {
   let dragged = null;
-
   function dragOver(event) {
     if (!dragged) return;
     const row = event.target.closest(rowSelector);
@@ -99,7 +98,6 @@ function nativeReorder(list, rowSelector, handleSelector, refresh, removeOutside
     });
     handle.addEventListener('dragend', finish);
   }
-
   list.addEventListener('dragover', dragOver);
   return bind;
 }
@@ -107,7 +105,6 @@ function nativeReorder(list, rowSelector, handleSelector, refresh, removeOutside
 function initializeIdBuilder(root) {
   if (root.dataset.initialized === 'yes') return;
   root.dataset.initialized = 'yes';
-
   const list = root.querySelector('[data-id-parts]');
   const trash = root.querySelector('[data-id-trash]');
   const preview = root.querySelector('[data-id-preview]');
@@ -125,7 +122,6 @@ function initializeIdBuilder(root) {
   const maxParts = Number(root.dataset.maxParts);
   let nextKey = 0;
   let initializing = true;
-
   function rows() {
     return [...list.querySelectorAll('[data-id-part]')];
   }
@@ -138,7 +134,6 @@ function initializeIdBuilder(root) {
     count.textContent = entries.length;
     addButton.disabled = entries.length >= maxParts;
     emptyMessage.hidden = entries.length !== 0;
-
     try {
       const value = entries.length === 0
         ? `INV-${String(sampleSequence).padStart(6, '0')}`
@@ -160,16 +155,13 @@ function initializeIdBuilder(root) {
     }
     if (!initializing) root.querySelector('form[data-inventory-autosave]')?.dispatchEvent(new Event('change', { bubbles: true }));
   }
-
   const bindNativeRow = window.Sortable ? null : nativeReorder(list, '[data-id-part]', '.id-drag-handle', refresh, true);
-
   function bindRow(row) {
     bindNativeRow?.(row);
     const selector = row.querySelector('[data-id-kind]');
     const pattern = row.querySelector('[data-id-pattern]');
     const helpButton = row.querySelector('[data-id-help-trigger]');
     const handle = row.querySelector('.id-drag-handle');
-
     function updateHelp() {
       helpButton.setAttribute('data-bs-title', selector.selectedOptions[0].textContent);
       helpButton.setAttribute('data-bs-content', help[selector.value] || '');
@@ -180,7 +172,6 @@ function initializeIdBuilder(root) {
         helpButton.title = help[selector.value] || '';
       }
     }
-
     selector.addEventListener('change', () => {
       pattern.value = defaults[selector.value];
       updateHelp();
@@ -203,7 +194,6 @@ function initializeIdBuilder(root) {
     });
     updateHelp();
   }
-
   rows().forEach(bindRow);
   addButton.addEventListener('click', () => {
     if (rows().length >= maxParts) return;
@@ -218,7 +208,6 @@ function initializeIdBuilder(root) {
     refresh();
     row.querySelector('[data-id-pattern]').focus();
   });
-
   if (window.Sortable) {
     window.Sortable.create(list, {
       group: { name: 'inventory_id_parts', pull: true, put: false },
@@ -255,14 +244,12 @@ function initializeFields(root) {
   if (root.dataset.initialized === 'yes') return;
   root.dataset.initialized = 'yes';
   let initializing = true;
-
   function refresh() {
     root.querySelectorAll('[data-field-row]').forEach((row, index) => {
       row.querySelector('[data-field-position]').value = String(index + 1);
     });
     if (!initializing) root.closest('form[data-inventory-autosave]')?.dispatchEvent(new Event('change', { bubbles: true }));
   }
-
   const bindNativeRow = window.Sortable ? null : nativeReorder(root, '[data-field-row]', '[data-field-handle]', refresh);
   root.querySelectorAll('[data-field-row]').forEach(row => {
     bindNativeRow?.(row);

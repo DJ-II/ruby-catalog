@@ -29,7 +29,7 @@
       <%= link_to t('exports.xlsx'), export_inventory_path(@inventory, format: :xlsx), class: 'btn btn-sm btn-outline-primary', data: { turbo: false } %>
     </div>
   </div>
-  <% if params[:sort].present? %><div class="mb-3"><%= link_to t('hotfix.reset_sort'), inventory_path(@inventory), class: 'btn btn-sm btn-outline-secondary' %></div><% end %>
+  <% if params[:sort].present? %><div class="mb-3"><%= link_to t('interface.reset_sort'), inventory_path(@inventory), class: 'btn btn-sm btn-outline-secondary' %></div><% end %>
   <%= form_with url: bulk_destroy_inventory_items_path(@inventory), method: :delete do |f| %>
     <% if @can_write %><div class="d-flex gap-2 mb-3"><%= f.submit t('items.delete_selected'), class: 'btn btn-outline-danger btn-sm', data: { turbo_confirm: t('forms.confirm') } %></div><% end %>
     <div class="table-responsive"><table class="table table-hover align-middle mb-0 inventory-items-table">

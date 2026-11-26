@@ -42,7 +42,6 @@ class CustomIdFormat
 
   def generate(sequence:, at: Time.current, sample: false)
     return 'INV-%06d' % sequence if empty?
-
     result = @parts.map do |part|
       kind = value(part, :kind)
       pattern = value(part, :pattern)
@@ -57,7 +56,6 @@ class CustomIdFormat
       when 'sequence' then format_number(sequence, pattern)
       end
     end.join
-
     raise InvalidFormat, I18n.t('ids.errors.generated_too_long', count: MAX_ID_LENGTH) if result.length > MAX_ID_LENGTH
     result
   end
@@ -65,16 +63,13 @@ class CustomIdFormat
   def valid_id?(custom_id)
     return false unless custom_id.is_a?(String) && custom_id.present? && custom_id.length <= MAX_ID_LENGTH
     return true if empty?
-
     match_part(custom_id, 0, 0, {})
   end
-
 
   def self.validate_part!(kind, pattern)
     raise InvalidFormat, I18n.t('ids.errors.unknown_kind') unless KINDS.include?(kind)
     raise InvalidFormat, I18n.t('ids.errors.empty_pattern') if !pattern.is_a?(String) || pattern.empty?
     raise InvalidFormat, I18n.t('ids.errors.part_too_long', count: MAX_ID_LENGTH) if pattern.length > MAX_ID_LENGTH
-
     case kind
     when 'random20', 'random32', 'random6', 'random9', 'sequence'
       number_options(pattern)
@@ -126,12 +121,10 @@ class CustomIdFormat
     return offset == custom_id.length if part_index == @parts.length
     key = [part_index, offset]
     return memo.fetch(key) if memo.key?(key)
-
     part = @parts[part_index]
     kind = value(part, :kind)
     pattern = value(part, :pattern)
     matches = lambda { |length| match_part(custom_id, part_index + 1, offset + length, memo) }
-
     result = case kind
              when 'fixed'
                custom_id[offset, pattern.length] == pattern && matches.call(pattern.length)
@@ -153,7 +146,6 @@ class CustomIdFormat
              end
     memo[key] = !!result
   end
-
 
   def value(part, attribute)
     part.respond_to?(attribute) ? part.public_send(attribute) : part.fetch(attribute)

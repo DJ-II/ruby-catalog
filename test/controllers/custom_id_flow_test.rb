@@ -13,7 +13,6 @@ class CustomIdFlowTest < ActionDispatch::IntegrationTest
     get edit_inventory_id_parts_path(@inventory)
     assert_response :success
     assert_select '[data-id-builder]'
-
     patch inventory_id_parts_path(@inventory), params: {
       lock_version: @inventory.reload.lock_version,
       parts: {
@@ -22,7 +21,6 @@ class CustomIdFlowTest < ActionDispatch::IntegrationTest
       }
     }
     assert_redirected_to edit_inventory_id_parts_path(@inventory)
-
     post inventory_items_path(@inventory), params: { item: { custom_id: '' } }
     assert_redirected_to inventory_path(@inventory)
     item = @inventory.items.last
@@ -34,11 +32,9 @@ class CustomIdFlowTest < ActionDispatch::IntegrationTest
     save_parts('fixed' => { kind: 'fixed', pattern: 'COMP-', position: 0 },
                'seq' => { kind: 'sequence', pattern: 'D3', position: 1 })
     sign_in(@owner)
-
     post inventory_items_path(@inventory), params: { item: { custom_id: 'WRONG-001' } }
     assert_response :unprocessable_entity
     assert_equal 0, @inventory.items.count
-
     post inventory_items_path(@inventory), params: { item: { custom_id: 'COMP-018' } }
     assert_redirected_to inventory_path(@inventory)
     assert_equal 'COMP-018', @inventory.items.last.custom_id
@@ -49,16 +45,13 @@ class CustomIdFlowTest < ActionDispatch::IntegrationTest
     post inventory_items_path(@inventory), params: { item: { custom_id: '' } }
     item = @inventory.items.last
     assert_equal 'INV-000001', item.custom_id
-
     save_parts('fixed' => { kind: 'fixed', pattern: 'NEW-', position: 0 },
                'seq' => { kind: 'sequence', pattern: 'D3', position: 1 })
     assert_equal 'INV-000001', item.reload.custom_id
-
     patch inventory_item_path(@inventory, item), params: {
       item: { custom_id: 'INV-000001', lock_version: item.lock_version }
     }
     assert_response :unprocessable_entity
-
     patch inventory_item_path(@inventory, item), params: {
       item: { custom_id: 'NEW-001', lock_version: item.reload.lock_version }
     }
@@ -78,7 +71,6 @@ class CustomIdFlowTest < ActionDispatch::IntegrationTest
     sign_in(@owner)
     stale_version = @inventory.lock_version
     @inventory.update!(title: 'Updated by another tab')
-
     patch inventory_id_parts_path(@inventory), params: {
       lock_version: stale_version,
       parts: { 'a' => { kind: 'fixed', pattern: 'BAD-', position: 0 } }

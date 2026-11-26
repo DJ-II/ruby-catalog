@@ -9,7 +9,6 @@ module Account
       unless selected.present? && valid_choices?(selected)
         return render plain: t('preferences.invalid'), status: :unprocessable_entity
       end
-
       if current_user
         unless current_user.update(selected)
           return render plain: current_user.errors.full_messages.to_sentence, status: :unprocessable_entity

@@ -2,14 +2,12 @@ class SearchController < ApplicationController
   def index
     @query = params[:q].to_s.strip.first(120)
     @tag = params[:tag].to_s.downcase.strip.first(40)
-
     inventories = Inventory.with_details
     inventories = inventories.joins(:tags).where(tags: { name: @tag }) if @tag.present?
     inventories = inventories.search_text(@query) if @query.present?
     @inventories_page = PageSlice.new(inventories.order(created_at: :desc, id: :desc),
                                       page: params[:inventory_page], per_page: 25)
     @inventories = @inventories_page.records
-
     @show_items = @tag.blank? || @query.present?
     if @show_items
       items = Item.includes(:inventory, :creator)

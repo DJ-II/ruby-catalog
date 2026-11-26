@@ -1,5 +1,0 @@
-en:
-  activerecord:
-    attributes:
-      item:
-        custom_id: Inventory number

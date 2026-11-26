@@ -1,5 +1,4 @@
 <div class="mb-4">
-  <div class="eyebrow text-primary mb-2"><%= t('users.profile') %></div>
   <h1 class="fw-bold mb-2"><%= t('preferences.title') %></h1>
   <p class="text-body-secondary"><%= t('preferences.description') %></p>
 </div>
@@ -20,3 +19,5 @@
     </div>
   <% end %>
 </section>
+
+<p class="text-center mt-3"><%= link_to t('account_settings.title'), account_settings_path %></p>

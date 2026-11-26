@@ -1,12 +1,10 @@
 function initializeDiscussion(root) {
   if (root.dataset.discussionMounted === 'yes') return;
   root.dataset.discussionMounted = 'yes';
-
   const list = root.querySelector('[data-discussion-list]');
   const endpoint = root.dataset.pollUrl;
   let lastId = Number(root.dataset.lastId || 0);
   let busy = false;
-
   async function poll() {
     if (busy || document.hidden || !root.isConnected) return;
     busy = true;
@@ -27,7 +25,6 @@ function initializeDiscussion(root) {
       busy = false;
     }
   }
-
   const timer = window.setInterval(poll, 3000);
   const onVisible = () => { if (!document.hidden) poll(); };
   document.addEventListener('visibilitychange', onVisible);

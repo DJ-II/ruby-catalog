@@ -20,7 +20,6 @@ class Item < ApplicationRecord
   def matches_current_custom_id_format
     return if custom_id.blank? || inventory.nil?
     return if inventory.custom_id_format.valid_id?(custom_id)
-
     errors.add(:custom_id, I18n.t('flash.invalid_id_format'))
   end
 end

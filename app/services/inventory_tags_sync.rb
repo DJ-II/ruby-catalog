@@ -5,7 +5,6 @@ class InventoryTagsSync
   def self.parse(value)
     names = value.to_s.split(',').map { |name| name.strip.downcase }.reject(&:blank?).uniq
     raise ArgumentError, I18n.t('tags.invalid') if names.length > MAX_TAGS || names.any? { |name| name.length > MAX_LENGTH || name.match?(/[\x00-\x1f\x7f]/) }
-
     names
   end
 

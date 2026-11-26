@@ -42,7 +42,6 @@ class Inventory < ApplicationRecord
 
   def cloudinary_image_url
     return if image_url.blank?
-
     cloud = ENV['CLOUDINARY_CLOUD_NAME'].to_s
     if cloud !~ /\A[a-zA-Z0-9_-]+\z/ || image_url !~ /\Ahttps:\/\/res\.cloudinary\.com\/#{Regexp.escape(cloud)}\/image\/upload\/[^\s]+\z/
       errors.add(:image_url, I18n.t('images.invalid_url'))

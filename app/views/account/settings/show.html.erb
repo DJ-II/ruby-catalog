@@ -1,0 +1,53 @@
+<h1 class="h2 mb-4"><%= t('account_settings.title') %></h1>
+<div class="mx-auto" style="max-width:720px">
+  <section class="form-panel mb-4">
+    <h2 class="h5 mb-3"><%= t('auth.username') %></h2>
+    <%= render 'shared/errors', record: @user %>
+    <%= form_with model: @user, url: account_settings_path, method: :patch, data: { turbo: false } do |f| %>
+      <div class="mb-3">
+        <%= f.label :username, t('auth.username'), class: 'form-label' %>
+        <%= f.text_field :username, class: 'form-control', required: true, minlength: 3, maxlength: 50, autocomplete: 'username' %>
+      </div>
+      <%= f.submit t('forms.save'), class: 'btn btn-primary' %>
+    <% end %>
+  </section>
+  <section class="form-panel mb-4">
+    <h2 class="h5 mb-3"><%= t('oauth.connections') %></h2>
+    <%= link_to t('oauth.connections'), account_connections_path, class: 'btn btn-outline-secondary' %>
+  </section>
+  <section class="form-panel border-danger mb-3">
+    <h2 class="h5 text-danger mb-3"><%= t('account_settings.delete_title') %></h2>
+    <p><%= t('account_settings.delete_warning') %></p>
+    <p class="small text-body-secondary"><%= t('account_settings.delete_retained') %></p>
+    <% verified = deletion_verified? %>
+    <% if verified %>
+      <p class="text-success"><%= t('account_settings.reauth_verified') %></p>
+    <% elsif @connections.any? { |identity| oauth_provider_enabled?(identity.provider) } %>
+      <p><%= t('account_settings.oauth_reauth_help') %></p>
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <% @connections.select { |identity| oauth_provider_enabled?(identity.provider) }.each do |identity| %>
+          <% label = { 'google_oauth2' => 'Google', 'github' => 'GitHub', 'facebook' => 'Facebook' }.fetch(identity.provider) %>
+          <%= button_to t('account_settings.reauth_provider', provider: label), "/auth/#{identity.provider}", method: :post, params: { intent: 'delete_reauth' }, form: { data: { turbo: false } }, class: 'btn btn-outline-secondary' %>
+        <% end %>
+      </div>
+    <% end %>
+    <% if verified || @user.password_login_enabled? %>
+      <%= form_with url: account_settings_path, method: :delete, data: { turbo: false } do |f| %>
+        <% unless verified %>
+          <div class="mb-3">
+            <%= f.label :current_password, t('account_settings.current_password'), class: 'form-label' %>
+            <%= f.password_field :current_password, required: true, autocomplete: 'current-password', class: 'form-control' %>
+          </div>
+        <% end %>
+        <div class="mb-3">
+          <%= f.label :confirmation, t('account_settings.confirmation'), class: 'form-label' %>
+          <%= f.text_field :confirmation, required: true, autocomplete: 'off', pattern: 'DELETE', class: 'form-control' %>
+        </div>
+        <%= f.submit t('account_settings.delete_button'), class: 'btn btn-danger' %>
+      <% end %>
+    <% elsif @connections.none? { |identity| oauth_provider_enabled?(identity.provider) } %>
+      <p class="text-danger mb-0"><%= t('account_settings.reauth_unavailable') %></p>
+    <% end %>
+  </section>
+  <p class="small"><%= link_to t('account_settings.privacy'), privacy_path %></p>
+</div>

@@ -19,10 +19,8 @@ class OauthAccount
   def authenticate_or_register
     existing = OauthIdentity.includes(:user).find_by(provider: @provider, uid: @uid)
     return existing.user if existing
-
     email = email_for_new_user
     raise EmailAlreadyUsed if User.where('lower(email) = ?', email.downcase).exists?
-
     password = SecureRandom.hex(32)
     User.transaction do
       user = User.create!(
@@ -46,7 +44,6 @@ class OauthAccount
     raise IdentityAlreadyLinked if existing && existing.user_id != user.id
     return existing if existing
     raise ProviderAlreadyLinked if user.oauth_identities.exists?(provider: @provider)
-
     user.oauth_identities.create!(provider: @provider, uid: @uid)
   rescue ActiveRecord::RecordNotUnique
     raise IdentityAlreadyLinked
@@ -58,7 +55,6 @@ class OauthAccount
     supplied = @info['email'].to_s.strip.downcase
     verified = (@provider == 'google_oauth2' && verified_google_email?) || (@provider == 'github' && verified_github_email?(supplied))
     return supplied if verified && supplied.match?(URI::MailTo::EMAIL_REGEXP)
-
     "social_#{Digest::SHA256.hexdigest("#{@provider}:#{@uid}")[0,24]}@oauth.inventoryhub.invalid"
   end
 
@@ -71,7 +67,6 @@ class OauthAccount
   def verified_github_email?(email)
     entries = @extra['all_emails']
     return false unless entries.is_a?(Array) && email.present?
-
     entries.any? do |entry|
       entry.is_a?(Hash) &&
         entry['primary'] == true && entry['verified'] == true &&

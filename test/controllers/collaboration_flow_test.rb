@@ -25,14 +25,12 @@ class CollaborationFlowTest < ActionDispatch::IntegrationTest
     assert_redirected_to inventory_comments_path(@inventory)
     first = @inventory.inventory_comments.last
     post inventory_comments_path(@inventory), params: { inventory_comment: { body: 'Second post' } }
-
     get inventory_comments_path(@inventory, format: :json), params: { after_id: first.id }
     assert_response :success
     assert_equal @inventory.inventory_comments.last.id, response.parsed_body['last_id']
     assert_includes response.parsed_body['html'], 'Second post'
     assert_not_includes response.parsed_body['html'], '**Hello**'
     assert_not_includes response.parsed_body['html'], '<script'
-
     get inventory_comments_path(@inventory)
     assert_select '.discussion-markdown strong', text: 'Hello'
     assert_select '.discussion-post', count: 2
@@ -58,7 +56,6 @@ class CollaborationFlowTest < ActionDispatch::IntegrationTest
     assert_equal 1, @item.item_likes.count
     get inventory_item_path(@inventory, @item)
     assert_select 'button', text: 'Unlike'
-
     delete inventory_item_like_path(@inventory, @item)
     assert_redirected_to inventory_item_path(@inventory, @item)
     assert_equal 0, @item.item_likes.count
@@ -88,7 +85,6 @@ class CollaborationFlowTest < ActionDispatch::IntegrationTest
     new_version = response.parsed_body['lock_version']
     assert_operator new_version, :>, version
     assert_equal 'Updated title', @inventory.reload.title
-
     patch inventory_path(@inventory), params: { inventory: { title: 'Stale overwrite', lock_version: version } }, as: :json
     assert_response :conflict
     assert_equal 'Updated title', @inventory.reload.title
@@ -102,13 +98,11 @@ class CollaborationFlowTest < ActionDispatch::IntegrationTest
         'title' => field.kind == 'string' && field.slot == 1 ? 'Model' : '',
         'description' => '', 'position' => field.position.to_s }
     end.transform_keys { |field| "#{field.kind}_#{field.slot}" }
-
     patch inventory_fields_path(@inventory), params: { lock_version: @inventory.lock_version, fields: fields }, as: :json
     assert_response :success
     field_version = response.parsed_body['lock_version']
     assert_operator field_version, :>, 0
     assert @inventory.inventory_fields.find_by!(kind: 'string', slot: 1).active?
-
     patch inventory_id_parts_path(@inventory), params: {
       lock_version: field_version,
       parts: { one: { kind: 'fixed', pattern: 'EQ-', position: 0 }, two: { kind: 'sequence', pattern: 'D3', position: 1 } }
@@ -116,7 +110,6 @@ class CollaborationFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_operator response.parsed_body['lock_version'], :>, field_version
     assert_equal 2, @inventory.inventory_id_parts.count
-
     patch inventory_id_parts_path(@inventory), params: {
       lock_version: field_version,
       parts: { one: { kind: 'fixed', pattern: 'BAD-', position: 0 } }

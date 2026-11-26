@@ -138,7 +138,6 @@ class InventoriesController < ApplicationController
 
   def parse_tags
     return nil if @tag_names_input.nil?
-
     InventoryTagsSync.parse(@tag_names_input)
   rescue ArgumentError => error
     @inventory.errors.add(:base, error.message)

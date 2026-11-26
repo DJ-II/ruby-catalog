@@ -52,7 +52,6 @@ class InventoryItemsExport
 
   def export_value(value, kind)
     return nil if value.nil?
-
     case kind
     when 'number' then value.to_f
     when 'bool' then value

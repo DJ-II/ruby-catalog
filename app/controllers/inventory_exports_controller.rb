@@ -2,7 +2,6 @@ class InventoryExportsController < ApplicationController
   def show
     inventory = Inventory.find(params[:id])
     export = InventoryItemsExport.new(inventory)
-
     case params[:format]
     when 'csv'
       send_data export.to_csv, filename: filename(inventory, 'csv'), type: 'text/csv; charset=utf-8', disposition: 'attachment'

@@ -33,7 +33,6 @@ class InventoryStatistics
         string_count: data[offset + 8].to_i
       }
     end
-
     frequent = Hash.new { |hash, key| hash[key] = [] }
     sql = <<~SQL
       SELECT ranked.slot, ranked.value, ranked.frequency
@@ -59,7 +58,6 @@ class InventoryStatistics
     ActiveRecord::Base.connection.select_all(safe_sql).each do |row|
       frequent[row['slot']] << { value: row['value'], count: row['frequency'].to_i }
     end
-
     @fields = definitions.map do |field|
       { definition: field, summary: aggregates.fetch(field.slot), common: frequent.fetch(field.column_name, []) }
     end

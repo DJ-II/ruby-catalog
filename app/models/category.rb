@@ -5,7 +5,6 @@ class Category < ApplicationRecord
   def localized_name
     key = name.to_s.downcase
     return name unless %w[equipment furniture book books document documents other].include?(key)
-
     I18n.t("categories.#{key}", default: name)
   end
 end

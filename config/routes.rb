@@ -12,6 +12,10 @@ Rails.application.routes.draw do
 
   match 'auth/:provider/callback', to: 'oauth_callbacks#callback', via: [:get, :post], as: :oauth_callback
   get 'auth/failure', to: 'oauth_callbacks#failure', as: :oauth_failure
+  get 'privacy', to: 'privacy#show', as: :privacy
+  get 'account/settings', to: 'account/settings#show', as: :account_settings
+  patch 'account/settings', to: 'account/settings#update'
+  delete 'account/settings', to: 'account/settings#destroy'
   get 'account/preferences', to: 'account/preferences#show', as: :account_preferences
   patch 'account/preferences', to: 'account/preferences#update'
   get 'account/connections', to: 'account/connections#index', as: :account_connections

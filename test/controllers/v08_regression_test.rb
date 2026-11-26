@@ -93,7 +93,6 @@ class V08RegressionTest < ActionDispatch::IntegrationTest
     patch inventory_item_path(@inventory, item), params: { item: { custom_id: 'INV-000002' } }
     assert_redirected_to edit_inventory_item_path(@inventory, item)
     assert_equal 'INV-000001', item.reload.custom_id
-
     patch inventory_item_path(@inventory, item), params: { item: { custom_id: 'INV-000002', lock_version: item.lock_version } }
     assert_redirected_to inventory_path(@inventory)
     assert_equal 'INV-000002', item.reload.custom_id

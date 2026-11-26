@@ -1,18 +1,15 @@
 function initializeAutosave(form) {
   if (form.dataset.autosaveMounted === 'yes') return;
   form.dataset.autosaveMounted = 'yes';
-
   const indicator = form.querySelector('[data-autosave-status]');
   const reload = form.querySelector('[data-autosave-reload]');
   const versionInput = form.querySelector('input[name="inventory[lock_version]"], input[name="lock_version"]');
   if (!indicator || !versionInput) return;
-
   let revision = 0;
   let savedRevision = 0;
   let validationRevision = -1;
   let inFlight = false;
   let conflict = false;
-
   function status(type, details = '') {
     indicator.textContent = `${indicator.dataset[type] || type}${details ? `: ${details}` : ''}`;
     indicator.dataset.state = type;
@@ -30,7 +27,6 @@ function initializeAutosave(form) {
     inFlight = true;
     const submittedRevision = revision;
     status('saving');
-
     try {
       const response = await fetch(form.action, {
         method: form.method.toUpperCase(),
@@ -66,7 +62,6 @@ function initializeAutosave(form) {
       inFlight = false;
     }
   }
-
   status('saved');
   form.addEventListener('input', markDirty);
   form.addEventListener('change', markDirty);
@@ -74,7 +69,6 @@ function initializeAutosave(form) {
     event.preventDefault();
     save();
   });
-
   const interval = window.setInterval(() => {
     if (!form.isConnected) {
       window.clearInterval(interval);
@@ -82,7 +76,6 @@ function initializeAutosave(form) {
     }
     save();
   }, 8000);
-
   document.addEventListener('turbo:before-cache', () => {
     window.clearInterval(interval);
     delete form.dataset.autosaveMounted;
