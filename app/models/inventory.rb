@@ -18,7 +18,12 @@ class Inventory < ApplicationRecord
 
   scope :with_details, -> { includes(:creator, :category) }
   scope :search_text, ->(term) {
-    where("to_tsvector('simple', coalesce(inventories.title, '') || ' ' || coalesce(inventories.description, '')) @@ websearch_to_tsquery('simple', ?)", term)
+    where(<<~SQL, term: term)
+      to_tsvector('simple', coalesce(inventories.title, '') || ' ' || coalesce(inventories.description, '')) @@ websearch_to_tsquery('simple', :term)
+      OR inventories.id IN (SELECT inventory_tags.inventory_id FROM inventory_tags JOIN tags ON tags.id = inventory_tags.tag_id WHERE to_tsvector('simple', tags.name) @@ websearch_to_tsquery('simple', :term))
+      OR inventories.id IN (SELECT inventory_fields.inventory_id FROM inventory_fields WHERE active AND to_tsvector('simple', coalesce(title, '') || ' ' || coalesce(description, '')) @@ websearch_to_tsquery('simple', :term))
+      OR inventories.id IN (SELECT inventory_comments.inventory_id FROM inventory_comments WHERE to_tsvector('simple', body) @@ websearch_to_tsquery('simple', :term))
+    SQL
   }
 
   def editable_by?(user)

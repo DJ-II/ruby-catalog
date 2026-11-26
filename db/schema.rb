@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_26_000100) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_26_000200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_26_000100) do
     t.text "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "to_tsvector('simple'::regconfig, body)", name: "idx_comments_search", using: :gin
     t.index ["inventory_id", "id"], name: "index_inventory_comments_on_inventory_id_and_id"
     t.index ["inventory_id"], name: "index_inventory_comments_on_inventory_id"
     t.index ["user_id"], name: "index_inventory_comments_on_user_id"
@@ -73,6 +74,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_26_000100) do
     t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "to_tsvector('simple'::regconfig, (((COALESCE(title, ''::character varying))::text || ' '::text) || COALESCE(description, ''::text)))", name: "idx_active_fields_search", where: "active", using: :gin
     t.index ["inventory_id", "kind", "slot"], name: "idx_inventory_fields_slot", unique: true
     t.index ["inventory_id"], name: "index_inventory_fields_on_inventory_id"
     t.check_constraint "NOT active OR length(btrim(title::text)) > 0", name: "inventory_fields_active_title_required"
@@ -137,7 +139,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_26_000100) do
     t.integer "lock_version", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index "to_tsvector('simple'::regconfig, (((((((((((((COALESCE(custom_id, ''::character varying))::text || ' '::text) || (COALESCE(string1, ''::character varying))::text) || ' '::text) || (COALESCE(string2, ''::character varying))::text) || ' '::text) || (COALESCE(string3, ''::character varying))::text) || ' '::text) || COALESCE(text1, ''::text)) || ' '::text) || COALESCE(text2, ''::text)) || ' '::text) || COALESCE(text3, ''::text)))", name: "idx_items_search", using: :gin
+    t.index "to_tsvector('simple'::regconfig, (((((((((((((((((((((((((((((((COALESCE(custom_id, ''::character varying))::text || ' '::text) || (COALESCE(string1, ''::character varying))::text) || ' '::text) || (COALESCE(string2, ''::character varying))::text) || ' '::text) || (COALESCE(string3, ''::character varying))::text) || ' '::text) || COALESCE(text1, ''::text)) || ' '::text) || COALESCE(text2, ''::text)) || ' '::text) || COALESCE(text3, ''::text)) || ' '::text) || COALESCE((trim_scale(number1))::text, ''::text)) || ' '::text) || COALESCE((trim_scale(number2))::text, ''::text)) || ' '::text) || COALESCE((trim_scale(number3))::text, ''::text)) || ' '::text) || (COALESCE(link1, ''::character varying))::text) || ' '::text) || (COALESCE(link2, ''::character varying))::text) || ' '::text) || (COALESCE(link3, ''::character varying))::text) || ' '::text) || COALESCE((bool1)::text, ''::text)) || ' '::text) || COALESCE((bool2)::text, ''::text)) || ' '::text) || COALESCE((bool3)::text, ''::text)))", name: "idx_items_search", using: :gin
     t.index ["created_by_id"], name: "index_items_on_created_by_id"
     t.index ["inventory_id", "created_at"], name: "index_items_on_inventory_id_and_created_at"
     t.index ["inventory_id", "custom_id"], name: "index_items_on_inventory_id_and_custom_id", unique: true
@@ -162,6 +164,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_26_000100) do
     t.string "name", limit: 40, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "to_tsvector('simple'::regconfig, (name)::text)", name: "idx_tags_search", using: :gin
     t.index ["name"], name: "idx_tags_name", unique: true
     t.index ["name"], name: "idx_tags_prefix", opclass: :varchar_pattern_ops
     t.check_constraint "char_length(btrim(name::text)) >= 1 AND char_length(btrim(name::text)) <= 40", name: "tags_name_length"

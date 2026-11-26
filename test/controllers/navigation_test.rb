@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UiV085Test < ActionDispatch::IntegrationTest
+class NavigationTest < ActionDispatch::IntegrationTest
   test 'guest header includes centered brand, global search and explore' do
     get root_path
     assert_response :success

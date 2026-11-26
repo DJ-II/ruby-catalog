@@ -16,7 +16,9 @@
   <div data-discussion-list>
     <%= render partial: 'inventory_comments/comment', collection: @comments, as: :comment %>
   </div>
-  <% if @comments.empty? %><p data-discussion-empty class="text-body-secondary mb-0"><%= t('comments.empty') %></p><% end %>
+  <% if @comments.empty? %>
+    <p data-discussion-empty class="text-body-secondary mb-0"><%= t('comments.empty') %></p>
+  <% end %>
 </section>
 <% if logged_in? && !@history %>
   <section class="form-panel wide-panel">

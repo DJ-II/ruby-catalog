@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  rate_limit to: 10, within: 1.minute, only: :create, store: AUTH_RATE_LIMIT_STORE, name: 'login', with: -> { rate_limited }
+
   def new; end
 
   def create
@@ -18,5 +20,13 @@ class SessionsController < ApplicationController
   def destroy
     reset_session
     redirect_to root_path, notice: t('flash.logged_out')
+  end
+
+  private
+
+  def rate_limited
+    response.set_header('Retry-After', '60')
+    flash.now[:alert] = t('flash.rate_limited')
+    render :new, status: :too_many_requests
   end
 end

@@ -8,7 +8,8 @@ class InventoryFieldsController < ApplicationController
   end
 
   def update
-    incoming = params.require(:fields).permit!.to_h
+    allowed_fields = InventoryField::KINDS.product((1..3).to_a).to_h { |kind, slot| ["#{kind}_#{slot}", %i[title description active visible_in_table position]] }
+    incoming = params.require(:fields).permit(allowed_fields).to_h
     existing = @inventory.inventory_fields.order(:position).to_a
     now = Time.current
     rows = existing.map do |field|

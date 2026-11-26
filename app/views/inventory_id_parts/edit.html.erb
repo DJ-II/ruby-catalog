@@ -25,7 +25,10 @@
     <%= hidden_field_tag :lock_version, @inventory.lock_version %>
     <section class="id-editor-panel mb-3">
       <div class="d-flex justify-content-between flex-wrap gap-2 align-items-center mb-3">
-        <div><h2 class="h5 fw-bold mb-1"><%= t('ids.elements') %></h2><p class="small text-body-secondary mb-0"><%= t('ids.reorder_help') %></p></div>
+        <div>
+          <h2 class="h5 fw-bold mb-1"><%= t('ids.elements') %></h2>
+          <p class="small text-body-secondary mb-0"><%= t('ids.reorder_help') %></p>
+        </div>
         <span class="badge text-bg-light border"><span data-id-part-count><%= @parts.length %></span> / <%= CustomIdFormat::MAX_PARTS %></span>
       </div>
       <div class="id-parts-list" data-id-parts>

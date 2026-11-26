@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CatalogV086Test < ActionDispatch::IntegrationTest
+class ProfileAccessAndBrandingTest < ActionDispatch::IntegrationTest
   setup do
     suffix = SecureRandom.hex(4)
     @member = User.create!(username: "cat_member_#{suffix}", email: "member_#{suffix}@example.test", password: 'TestingPass123')

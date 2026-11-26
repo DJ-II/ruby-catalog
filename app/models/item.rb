@@ -13,7 +13,7 @@ class Item < ApplicationRecord
   end
 
   scope :search_text, ->(term) {
-    where("to_tsvector('simple', coalesce(items.custom_id, '') || ' ' || coalesce(items.string1, '') || ' ' || coalesce(items.string2, '') || ' ' || coalesce(items.string3, '') || ' ' || coalesce(items.text1, '') || ' ' || coalesce(items.text2, '') || ' ' || coalesce(items.text3, '')) @@ websearch_to_tsquery('simple', ?)", term)
+    where("to_tsvector('simple', coalesce(items.custom_id, '') || ' ' || coalesce(items.string1, '') || ' ' || coalesce(items.string2, '') || ' ' || coalesce(items.string3, '') || ' ' || coalesce(items.text1, '') || ' ' || coalesce(items.text2, '') || ' ' || coalesce(items.text3, '') || ' ' || coalesce(trim_scale(items.number1)::text, '') || ' ' || coalesce(trim_scale(items.number2)::text, '') || ' ' || coalesce(trim_scale(items.number3)::text, '') || ' ' || coalesce(items.link1, '') || ' ' || coalesce(items.link2, '') || ' ' || coalesce(items.link3, '') || ' ' || coalesce(items.bool1::text, '') || ' ' || coalesce(items.bool2::text, '') || ' ' || coalesce(items.bool3::text, '')) @@ websearch_to_tsquery('simple', ?)", term)
   }
   private
 

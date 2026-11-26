@@ -1,23 +1,35 @@
 <% selectable = local_assigns.fetch(:selectable, false) %>
 <div class="table-responsive">
   <table class="table table-hover align-middle mb-0 inventory-directory-table">
-    <thead><tr>
-      <% if selectable %><th scope="col"><span class="visually-hidden"><%= t('users.select_to_delete') %></span></th><% end %>
-      <th scope="col"><%= t('table.inventory') %></th><th scope="col"><%= t('table.category') %></th><th scope="col"><%= t('table.creator') %></th><th scope="col" class="text-end"><%= t('table.items') %></th>
-    </tr></thead>
+    <thead>
+      <tr>
+        <% if selectable %>
+          <th scope="col"><input type="checkbox" data-bulk-all aria-label="<%= t('items.select_all') %>"></th>
+        <% end %>
+        <th scope="col"><%= t('table.inventory') %></th>
+        <th scope="col"><%= t('table.category') %></th>
+        <th scope="col"><%= t('table.creator') %></th>
+        <th scope="col" class="text-end"><%= t('table.items') %></th>
+      </tr>
+    </thead>
     <tbody>
       <% if inventories.any? %>
         <% inventories.each do |inventory| %>
           <tr>
-            <% if selectable %><td><%= check_box_tag 'inventory_ids[]', inventory.id, false, class: 'form-check-input', aria: { label: t('users.select_inventory', title: inventory.title) } %></td><% end %>
-            <td><%= link_to inventory.title, inventory_path(inventory), class: 'fw-semibold text-decoration-none' %><div class="small text-body-secondary truncate-description"><%= truncate(inventory.description.to_s, length: 100) %></div></td>
+            <% if selectable %>
+              <td><%= check_box_tag 'inventory_ids[]', inventory.id, false, class: 'form-check-input', aria: { label: t('users.select_inventory', title: inventory.title) } %></td>
+            <% end %>
+            <td><%= link_to inventory.title, inventory_path(inventory), class: 'fw-semibold text-decoration-none' %><div class="small text-body-secondary truncate-description"><%= truncate(inventory.description.to_s, length: 100) %></div>
+            </td>
             <td><%= inventory.category.localized_name %></td>
             <td><%= link_to inventory.creator.username, user_path(inventory.creator), class: 'text-decoration-none' %></td>
             <td class="text-end font-monospace"><%= inventory.items_count %></td>
           </tr>
         <% end %>
       <% else %>
-        <tr><td colspan="<%= selectable ? 5 : 4 %>" class="empty-state"><%= t('home.empty') %></td></tr>
+        <tr>
+          <td colspan="<%= selectable ? 5 : 4 %>" class="empty-state"><%= t('home.empty') %></td>
+        </tr>
       <% end %>
     </tbody>
   </table>

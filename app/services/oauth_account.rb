@@ -1,6 +1,7 @@
 require 'digest'
 require 'securerandom'
 require 'uri'
+require 'set'
 
 class OauthAccount
   class InvalidIdentity < StandardError; end
@@ -17,12 +18,13 @@ class OauthAccount
   end
 
   def authenticate_or_register
+    attempts ||= 0
     existing = OauthIdentity.includes(:user).find_by(provider: @provider, uid: @uid)
     return existing.user if existing
     email = email_for_new_user
     raise EmailAlreadyUsed if User.where('lower(email) = ?', email.downcase).exists?
     password = SecureRandom.hex(32)
-    User.transaction do
+    User.transaction(requires_new: true) do
       user = User.create!(
         username: new_username,
         email: email,
@@ -33,9 +35,20 @@ class OauthAccount
       user.oauth_identities.create!(provider: @provider, uid: @uid)
       user
     end
-  rescue ActiveRecord::RecordNotUnique
+  rescue ActiveRecord::RecordInvalid => error
+    raise unless error.record.is_a?(User) && error.record.errors.added?(:username, :taken)
+    attempts += 1
+    retry if attempts < 3
+    raise
+  rescue ActiveRecord::RecordNotUnique => error
     existing = OauthIdentity.includes(:user).find_by(provider: @provider, uid: @uid)
     return existing.user if existing
+    constraint = error.cause.result&.error_field(PG::Result::PG_DIAG_CONSTRAINT_NAME) if error.cause.respond_to?(:result)
+    if constraint == 'index_users_on_lower_username'
+      attempts += 1
+      retry if attempts < 3
+    end
+    raise EmailAlreadyUsed if constraint == 'index_users_on_lower_email'
     raise IdentityAlreadyLinked
   end
 
@@ -82,12 +95,11 @@ class OauthAccount
     end
     base = display.to_s.gsub(/[^\p{L}\p{N}_-]+/u, '_').gsub(/\A[_-]+|[_-]+\z/u, '')[0, 40]
     base = 'member' if base.length < 3
-    candidate = base
+    prefix = ActiveRecord::Base.sanitize_sql_like(base.downcase)
+    taken = User.where('lower(username) = :base OR lower(username) LIKE :prefix', base: base.downcase, prefix: "#{prefix}\\_%").pluck(:username).map(&:downcase).to_set
+    return base unless taken.include?(base.downcase)
     number = 2
-    while User.where('lower(username) = ?', candidate.downcase).exists?
-      candidate = "#{base}_#{number}"
-      number += 1
-    end
-    candidate
+    number += 1 while taken.include?("#{base.downcase}_#{number}")
+    "#{base}_#{number}"
   end
 end

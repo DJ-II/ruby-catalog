@@ -1,5 +1,9 @@
 <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
-  <div><div class="eyebrow text-primary mb-1"><%= t('oauth.account') %></div><h1 class="h2 fw-bold mb-1"><%= t('oauth.connections') %></h1><p class="text-body-secondary mb-0"><%= t('oauth.connections_help') %></p></div>
+  <div>
+    <div class="eyebrow text-primary mb-1"><%= t('oauth.account') %></div>
+    <h1 class="h2 fw-bold mb-1"><%= t('oauth.connections') %></h1>
+    <p class="text-body-secondary mb-0"><%= t('oauth.connections_help') %></p>
+  </div>
   <%= link_to t('navigation.my_profile'), user_path(current_user), class: 'btn btn-outline-secondary' %>
 </div>
 <div class="form-panel mx-auto" style="max-width:760px">
@@ -7,7 +11,10 @@
     <% connected = @connections.find { |identity| identity.provider == provider } %>
     <% next if provider == 'facebook' && !connected && !oauth_provider_enabled?(provider) %>
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 py-3 border-bottom">
-      <div><div class="fw-semibold"><%= label %></div><div class="small text-body-secondary"><%= t(connected ? 'oauth.connected' : 'oauth.disconnected') %></div></div>
+      <div>
+        <div class="fw-semibold"><%= label %></div>
+        <div class="small text-body-secondary"><%= t(connected ? 'oauth.connected' : 'oauth.disconnected') %></div>
+      </div>
       <% if connected %>
         <% if current_user.password_login_enabled? || @connections.size > 1 %>
           <%= button_to t('oauth.disconnect'), account_connection_path(provider), method: :delete, class: 'btn btn-outline-danger btn-sm', form: { data: { turbo_confirm: t('oauth.disconnect_confirm') } } %>

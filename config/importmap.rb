@@ -6,3 +6,5 @@ pin 'inventory_discussion', to: 'inventory_discussion.js'
 pin 'inventory_enhancements', to: 'inventory_enhancements.js'
 
 pin 'item_likes', to: 'item_likes.js'
+pin 'bulk_selection', to: 'bulk_selection.js'
+pin 'access_autocomplete', to: 'access_autocomplete.js'

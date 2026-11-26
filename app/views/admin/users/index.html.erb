@@ -1,12 +1,48 @@
-<div class="mb-4"><h1 class="fw-bold"><%= t('admin.title') %></h1><p class="text-body-secondary"><%= t('admin.hint') %></p></div>
-<%= form_with url: admin_users_path, method: :get, class: 'd-flex flex-wrap gap-2 mb-3' do |f| %><%= f.search_field :q, value: params[:q], class: 'form-control', placeholder: t('admin.search') %><%= f.hidden_field :sort, value: @sort %><%= f.hidden_field :direction, value: @direction %><%= f.select :role, options_for_select([[t('interface.all_roles'), ''], [t('admin.admin'), 'admin'], [t('admin.member'), 'member']], params[:role]), {}, class: 'form-select w-auto' %><%= f.select :status, options_for_select([[t('interface.all_statuses'), ''], [t('admin.active'), 'active'], [t('admin.blocked'), 'blocked']], params[:status]), {}, class: 'form-select w-auto' %><%= f.submit t('navigation.go'), class: 'btn btn-outline-primary' %><% end %>
+<div class="mb-4">
+  <h1 class="fw-bold"><%= t('admin.title') %></h1>
+  <p class="text-body-secondary"><%= t('admin.hint') %></p>
+</div>
+<%= form_with url: admin_users_path, method: :get, class: 'd-flex flex-wrap gap-2 mb-3' do |f| %>
+  <%= f.search_field :q, value: params[:q], class: 'form-control', placeholder: t('admin.search') %>
+  <%= f.hidden_field :sort, value: @sort %>
+  <%= f.hidden_field :direction, value: @direction %>
+  <%= f.select :role, options_for_select([[t('interface.all_roles'), ''], [t('admin.admin'), 'admin'], [t('admin.member'), 'member']], params[:role]), {}, class: 'form-select w-auto' %>
+  <%= f.select :status, options_for_select([[t('interface.all_statuses'), ''], [t('admin.active'), 'active'], [t('admin.blocked'), 'blocked']], params[:status]), {}, class: 'form-select w-auto' %>
+  <%= f.submit t('navigation.go'), class: 'btn btn-outline-primary' %><% end %>
 <section class="table-panel">
-  <%= form_with url: manage_admin_users_path, method: :patch do |f| %>
-    <div class="d-flex flex-wrap align-items-center gap-2 mb-3"><%= select_tag :operation, options_for_select([[t('admin.block'), 'block'], [t('admin.unblock'), 'unblock'], [t('admin.promote'), 'promote'], [t('admin.demote'), 'demote'], [t('admin.delete'), 'delete']]), class: 'form-select admin-action-select' %><%= f.submit t('admin.apply'), class: 'btn btn-outline-primary', data: { turbo_confirm: t('admin.confirm') } %></div>
-    <div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th></th><th aria-sort="<%= table_sort_aria('username') %>"><%= sortable_heading(t('auth.username'), 'username') %></th><th aria-sort="<%= table_sort_aria('email') %>"><%= sortable_heading(t('auth.email'), 'email') %></th><th aria-sort="<%= table_sort_aria('role') %>"><%= sortable_heading(t('admin.role'), 'role') %></th><th aria-sort="<%= table_sort_aria('status') %>"><%= sortable_heading(t('admin.status'), 'status') %></th></tr></thead><tbody>
-      <% @users.each do |user| %><tr><td><%= radio_button_tag :user_id, user.id, false, required: true, aria: { label: t('admin.select_user', username: user.username) } %></td><td><%= link_to user.username, user_path(user) %></td><td><%= user.email %></td><td><%= user.admin? ? t('admin.admin') : t('admin.member') %></td><td><span class="badge <%= user.blocked? ? 'text-bg-danger' : 'text-bg-success' %>"><%= user.blocked? ? t('admin.blocked') : t('admin.active') %></span></td></tr><% end %>
-      <% if @users.empty? %><tr><td colspan="5" class="empty-state"><%= t('admin.empty') %></td></tr><% end %>
-    </tbody></table></div>
+  <%= form_with url: manage_admin_users_path, method: :patch, data: { bulk_selection: "user_id" } do |f| %>
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-3"><%= select_tag :operation, options_for_select([[t('admin.block'), 'block'], [t('admin.unblock'), 'unblock'], [t('admin.promote'), 'promote'], [t('admin.demote'), 'demote'], [t('admin.delete'), 'delete']]), class: 'form-select admin-action-select' %>
+      <%= f.submit t('admin.apply'), class: 'btn btn-outline-primary', data: { bulk_action: true, turbo_confirm: t('admin.confirm') } %>
+      <span class="small text-body-secondary" data-bulk-count aria-live="polite" hidden><%= t('bulk.selected') %> <span data-bulk-number>0</span></span></div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th></th>
+            <th aria-sort="<%= table_sort_aria('username') %>"><%= sortable_heading(t('auth.username'), 'username') %></th>
+            <th aria-sort="<%= table_sort_aria('email') %>"><%= sortable_heading(t('auth.email'), 'email') %></th>
+            <th aria-sort="<%= table_sort_aria('role') %>"><%= sortable_heading(t('admin.role'), 'role') %></th>
+            <th aria-sort="<%= table_sort_aria('status') %>"><%= sortable_heading(t('admin.status'), 'status') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td><%= radio_button_tag :user_id, user.id, false, required: true, aria: { label: t('admin.select_user', username: user.username) } %></td>
+              <td><%= link_to user.username, user_path(user) %></td>
+              <td><%= user.email %></td>
+              <td><%= user.admin? ? t('admin.admin') : t('admin.member') %></td>
+              <td><span class="badge <%= user.blocked? ? 'text-bg-danger' : 'text-bg-success' %>"><%= user.blocked? ? t('admin.blocked') : t('admin.active') %></span></td>
+            </tr>
+          <% end %>
+          <% if @users.empty? %>
+            <tr>
+              <td colspan="5" class="empty-state"><%= t('admin.empty') %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   <% end %>
   <%= render 'shared/pagination', slice: @users_page, page_key: :page %>
 </section>

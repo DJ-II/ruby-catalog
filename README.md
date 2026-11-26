@@ -1,10 +1,10 @@
-# Catalog
+﻿# Catalog
 
 Catalog is a Rails inventory management application with configurable inventory numbers, typed custom fields and collaborative editing.
 
 ## Requirements
 
-- Ruby 4.0.7 (see `.ruby-version`), Bundler and Rails 8.1
+- Ruby 4.0.10 (see `.ruby-version`), Bundler and Rails 8.1
 - PostgreSQL
 - Git
 
@@ -70,3 +70,22 @@ OAuth callback paths: `/auth/google_oauth2/callback` and `/auth/github/callback`
 Users can change their username or delete their account. Account deletion requires the exact word `DELETE` and the current password or a fresh OAuth callback for an already linked identity. Owned inventories are deleted; items and comments in other inventories retain their content but lose the user association. Cloudinary assets are not automatically removed. Public privacy information is available at `/privacy`.
 
 Set a real contact email before public release. The unsigned upload preset should be restricted to appropriate image formats; consider signed uploads for a wider public deployment.
+
+
+## Search and authentication safeguards
+
+Search uses PostgreSQL full-text indexes. Inventory results include titles, descriptions, tags, active field definitions and discussion text. Item results include inventory numbers and all stored typed values. The tag filter is independent of the item query.
+
+Automatic inventory numbers use up to ten random candidates checked in one query. Explicitly supplied duplicate numbers are rejected.
+
+Password sign-in allows ten requests per minute per client IP; signup allows five per ten minutes. The in-memory rate-limit store is shared by controllers within one process. Configure a shared cache if deploying multiple processes or instances. These limits do not cover external OAuth providers.
+
+## Security checks
+
+```powershell
+bundle exec brakeman -q
+bundle exec bundler-audit check --update
+```
+
+The dependency scan requires internet access and the deployed project's actual Gemfile.lock. Review any warnings before releasing; do not suppress findings without investigating them.
+

@@ -153,7 +153,6 @@ pl:
     popular: Najpopularniejsze inwentarze
     tags: Tagi
     empty: Nie utworzono jeszcze żadnych inwentarzy.
-    no_tags: Chmura tagów pojawi się w kolejnej wersji.
   search:
     browse: Katalog
     title: Wyszukiwarka
@@ -284,7 +283,12 @@ pl:
     empty: Brak użytkowników spełniających kryteria.
     confirm: Potwierdzasz operację zarządzania kontem?
     select_user: Zaznacz użytkownika %{username}
+  bulk:
+    choose_row: Najpierw zaznacz wiersz.
+    selected: "Zaznaczono:"
   flash:
+    rate_limited: Zbyt wiele prób. Spróbuj ponownie później.
+    generated_id_unavailable: Nie udało się wygenerować wolnego numeru inwentarzowego. Spróbuj ponownie lub wpisz poprawny numer.
     registered: Konto zostało utworzone.
     logged_in: Pomyślnie zalogowano.
     logged_out: Wylogowano.

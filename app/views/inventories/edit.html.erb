@@ -1,4 +1,7 @@
-<div class="form-panel mx-auto wide-panel"><div class="eyebrow text-primary mb-2"><%= link_to @inventory.title, inventory_path(@inventory), class: 'text-decoration-none' %></div><h1 class="h2 fw-bold mb-4"><%= t('inventories.edit') %></h1><%= render 'shared/inventory_nav', inventory: @inventory, active: :settings %><%= render 'form' %>
-  <hr class="my-4"><h2 class="h5 fw-semibold"><%= t('inventories.delete') %></h2><p class="text-body-secondary small"><%= t('inventories.delete_warning') %></p>
+<div class="form-panel mx-auto wide-panel">
+  <div class="eyebrow text-primary mb-2"><%= link_to @inventory.title, inventory_path(@inventory), class: 'text-decoration-none' %></div>
+  <h1 class="h2 fw-bold mb-4"><%= t('inventories.edit') %></h1><%= render 'shared/inventory_nav', inventory: @inventory, active: :settings %><%= render 'form' %>
+  <hr class="my-4"><h2 class="h5 fw-semibold"><%= t('inventories.delete') %></h2>
+  <p class="text-body-secondary small"><%= t('inventories.delete_warning') %></p>
   <%= button_to t('inventories.delete'), inventory_path(@inventory), method: :delete, class: 'btn btn-outline-danger', form: { data: { turbo_confirm: t('forms.confirm') } } %>
 </div>

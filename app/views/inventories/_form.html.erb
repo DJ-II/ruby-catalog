@@ -1,8 +1,11 @@
 <%= render 'shared/errors', record: @inventory %>
 <%= form_with model: @inventory, data: (@inventory.persisted? ? { inventory_autosave: true } : {}) do |f| %>
-  <% if @inventory.persisted? %><%= f.hidden_field :lock_version %><% end %>
-  <div class="mb-3"><%= f.label :title, t('inventories.title'), class: 'form-label fw-semibold' %><%= f.text_field :title, class: 'form-control', required: true, maxlength: 150, placeholder: t('catalog.inventory_example') %></div>
-  <div class="mb-3"><%= f.label :description, t('inventories.description'), class: 'form-label fw-semibold' %><%= f.text_area :description, class: 'form-control', rows: 5, maxlength: 20000 %></div>
+  <% if @inventory.persisted? %>
+    <%= f.hidden_field :lock_version %><% end %>
+  <div class="mb-3"><%= f.label :title, t('inventories.title'), class: 'form-label fw-semibold' %>
+    <%= f.text_field :title, class: 'form-control', required: true, maxlength: 150, placeholder: t('catalog.inventory_example') %></div>
+  <div class="mb-3"><%= f.label :description, t('inventories.description'), class: 'form-label fw-semibold' %>
+    <%= f.text_area :description, class: 'form-control', rows: 5, maxlength: 20000 %></div>
   <div class="mb-3">
     <%= label_tag :inventory_tag_names, t('tags.label'), class: 'form-label fw-semibold' %>
     <%= text_field_tag 'inventory[tag_names]', @tag_names_input || @inventory.tags.map(&:name).join(', '),
@@ -31,7 +34,8 @@
     </div>
   </div>
   <div class="mb-3"><%= f.label :category_id, t('table.category'), class: 'form-label fw-semibold' %><%= f.collection_select :category_id, @categories, :id, :localized_name, { prompt: t('inventories.pick_category') }, { class: 'form-select', required: true } %></div>
-  <div class="form-check form-switch mb-2"><%= f.check_box :is_public, class: 'form-check-input' %><%= f.label :is_public, t('inventories.public'), class: 'form-check-label fw-semibold' %></div>
+  <div class="form-check form-switch mb-2"><%= f.check_box :is_public, class: 'form-check-input' %>
+    <%= f.label :is_public, t('inventories.public'), class: 'form-check-label fw-semibold' %></div>
   <p class="small text-body-secondary mb-4"><%= t('inventories.public_help') %></p>
   <% if @inventory.persisted? %><%= render 'shared/autosave_status', reload_url: edit_inventory_path(@inventory) %><% end %>
   <div class="d-flex flex-wrap gap-2"><%= f.submit t('forms.save'), class: 'btn btn-primary px-4' %><%= link_to t('forms.cancel'), @inventory.persisted? ? inventory_path(@inventory) : inventories_path, class: 'btn btn-outline-secondary' %></div>

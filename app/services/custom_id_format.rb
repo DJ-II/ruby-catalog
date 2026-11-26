@@ -40,6 +40,10 @@ class CustomIdFormat
     @parts.empty?
   end
 
+  def random?
+    @parts.any? { |part| %w[random20 random32 random6 random9 guid].include?(value(part, :kind)) }
+  end
+
   def generate(sequence:, at: Time.current, sample: false)
     return 'INV-%06d' % sequence if empty?
     result = @parts.map do |part|

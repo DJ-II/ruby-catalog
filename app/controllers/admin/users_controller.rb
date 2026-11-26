@@ -23,6 +23,7 @@ module Admin
     end
 
     def manage
+      return redirect_to admin_users_path, alert: t('bulk.choose_row') if params[:user_id].blank?
       @user = User.find(params[:user_id])
       if params[:operation] == 'delete'
         return destroy

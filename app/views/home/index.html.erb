@@ -1,6 +1,8 @@
 <% content_for :home_banner do %>
   <section class="home-banner">
-    <div class="container site-container"><h1><%= t('home.title') %></h1></div>
+    <div class="container site-container">
+      <h1><%= t('home.title') %></h1>
+    </div>
   </section>
 <% end %>
 <div class="row g-4">
@@ -16,11 +18,30 @@
   <div class="col-xl-4">
     <section class="table-panel h-100">
       <h2 class="h5 fw-semibold mb-3"><%= t('home.popular') %></h2>
-      <div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th><%= t('table.inventory') %></th><th class="text-end"><%= t('table.items') %></th></tr></thead><tbody>
-        <% if @popular.any? %>
-          <% @popular.each do |inventory| %><tr><td><%= link_to inventory.title, inventory_path(inventory), class: 'text-decoration-none fw-semibold' %></td><td class="text-end font-monospace"><%= inventory.items_count %></td></tr><% end %>
-        <% else %><tr><td colspan="2" class="empty-state"><%= t('home.empty') %></td></tr><% end %>
-      </tbody></table></div>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th><%= t('table.inventory') %></th>
+              <th class="text-end"><%= t('table.items') %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @popular.any? %>
+              <% @popular.each do |inventory| %>
+                <tr>
+                  <td><%= link_to inventory.title, inventory_path(inventory), class: 'text-decoration-none fw-semibold' %></td>
+                  <td class="text-end font-monospace"><%= inventory.items_count %></td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="2" class="empty-state"><%= t('home.empty') %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </section>
   </div>
 </div>

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class V083RegressionTest < ActionDispatch::IntegrationTest
+class SortingAdminAndPreferencesTest < ActionDispatch::IntegrationTest
   setup do
     suffix = SecureRandom.hex(5)
     @owner = User.create!(username: "owner_#{suffix}", email: "owner_#{suffix}@example.test", password: 'TestingPass123')

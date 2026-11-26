@@ -27,52 +27,58 @@
       </div>
       <div class="toolbar-band">
         <div class="container site-container">
-        <div class="site-toolbar">
-          <nav class="site-navigation" aria-label="<%= t('navigation.mobile') %>">
-            <%= link_to t('navigation.explore'), inventories_path, class: 'btn btn-outline-secondary explore-link' %>
-          </nav>
-          <%= form_with url: search_path, method: :get, class: 'site-search', role: 'search' do |f| %>
-            <div class="search-input-wrap">
-              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
-              <%= f.search_field :q, value: params[:q], class: 'form-control', placeholder: t('navigation.search'), 'aria-label': t('navigation.search'), maxlength: 120 %>
-            </div>
-            <%= f.submit t('navigation.go'), class: 'btn btn-primary search-submit' %>
-          <% end %>
-          <div class="site-actions">
-            <div class="locale-switch" role="group" aria-label="<%= t('preferences.language') %>">
-              <% %w[en pl].each do |locale| %>
-                <%= button_to locale.upcase, account_preferences_path, method: :patch, params: { preferences: { locale: locale } }, form: { data: { turbo: false } }, class: "btn #{I18n.locale.to_s == locale ? 'btn-primary' : 'btn-outline-secondary'}", title: locale == 'en' ? 'English' : 'Polski', aria: { pressed: (I18n.locale.to_s == locale).to_s } %>
+          <div class="site-toolbar">
+            <nav class="site-navigation" aria-label="<%= t('navigation.mobile') %>">
+              <%= link_to t('navigation.explore'), inventories_path, class: 'btn btn-outline-secondary explore-link' %>
+            </nav>
+            <%= form_with url: search_path, method: :get, class: 'site-search', role: 'search' do |f| %>
+              <div class="search-input-wrap">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+                <%= f.search_field :q, value: params[:q], class: 'form-control', placeholder: t('navigation.search'), 'aria-label': t('navigation.search'), maxlength: 120 %>
+              </div>
+              <%= f.submit t('navigation.go'), class: 'btn btn-primary search-submit' %>
+            <% end %>
+            <div class="site-actions">
+              <div class="locale-switch" role="group" aria-label="<%= t('preferences.language') %>">
+                <% %w[en pl].each do |locale| %>
+                  <%= button_to locale.upcase, account_preferences_path, method: :patch, params: { preferences: { locale: locale } }, form: { data: { turbo: false } }, class: "btn #{I18n.locale.to_s == locale ? 'btn-primary' : 'btn-outline-secondary'}", title: locale == 'en' ? 'English' : 'Polski', aria: { pressed: (I18n.locale.to_s == locale).to_s } %>
+                <% end %>
+              </div>
+              <%= button_to(preferred_theme == 'dark' ? '☀' : '☾', account_preferences_path, method: :patch, params: { preferences: { theme: preferred_theme == 'dark' ? 'light' : 'dark' } }, form: { data: { turbo: false } }, class: 'btn btn-outline-secondary theme-toggle', title: t('preferences.toggle_theme'), aria: { label: t('preferences.toggle_theme') }) %>
+              <% if current_user %>
+                <details class="account-menu">
+                  <summary class="btn btn-outline-secondary"><span class="account-name"><%= current_user.username %></span></summary>
+                  <div class="account-menu-content">
+                    <%= link_to t('navigation.my_profile'), user_path(current_user), class: 'account-menu-link' %>
+                    <%= link_to t('account_settings.title'), account_settings_path, class: 'account-menu-link' %>
+                    <%= link_to t('preferences.title'), account_preferences_path, class: 'account-menu-link' %>
+                    <%= link_to t('oauth.connections'), account_connections_path, class: 'account-menu-link' %>
+                    <% if current_user.admin? %><%= link_to t('navigation.admin'), admin_users_path, class: 'account-menu-link' %><% end %>
+                    <div class="account-menu-divider"></div>
+                    <%= button_to t('navigation.logout'), logout_path, method: :delete, form: { data: { turbo: false } }, class: 'account-menu-link account-logout' %>
+                  </div>
+                </details>
+              <% else %>
+                <%= link_to t('navigation.login'), login_path, class: 'btn btn-outline-secondary auth-link' %>
+                <%= link_to t('navigation.signup'), signup_path, class: 'btn btn-primary auth-link' %>
               <% end %>
             </div>
-            <%= button_to(preferred_theme == 'dark' ? '☀' : '☾', account_preferences_path, method: :patch, params: { preferences: { theme: preferred_theme == 'dark' ? 'light' : 'dark' } }, form: { data: { turbo: false } }, class: 'btn btn-outline-secondary theme-toggle', title: t('preferences.toggle_theme'), aria: { label: t('preferences.toggle_theme') }) %>
-            <% if current_user %>
-              <details class="account-menu">
-                <summary class="btn btn-outline-secondary"><span class="account-name"><%= current_user.username %></span></summary>
-                <div class="account-menu-content">
-                  <%= link_to t('navigation.my_profile'), user_path(current_user), class: 'account-menu-link' %>
-                  <%= link_to t('account_settings.title'), account_settings_path, class: 'account-menu-link' %>
-                  <%= link_to t('preferences.title'), account_preferences_path, class: 'account-menu-link' %>
-                  <%= link_to t('oauth.connections'), account_connections_path, class: 'account-menu-link' %>
-                  <% if current_user.admin? %><%= link_to t('navigation.admin'), admin_users_path, class: 'account-menu-link' %><% end %>
-                  <div class="account-menu-divider"></div>
-                  <%= button_to t('navigation.logout'), logout_path, method: :delete, form: { data: { turbo: false } }, class: 'account-menu-link account-logout' %>
-                </div>
-              </details>
-            <% else %>
-              <%= link_to t('navigation.login'), login_path, class: 'btn btn-outline-secondary auth-link' %>
-              <%= link_to t('navigation.signup'), signup_path, class: 'btn btn-primary auth-link' %>
-            <% end %>
           </div>
         </div>
-      </div>
       </div>
     </header>
     <%= yield :home_banner if content_for?(:home_banner) %>
 
     <main class="container site-container py-4">
-      <% if notice.present? %><div class="alert alert-success" role="status"><%= notice %></div><% end %>
-      <% if flash[:info].present? %><div class="alert alert-info" role="status"><%= flash[:info] %></div><% end %>
-      <% if alert.present? %><div class="alert alert-danger" role="alert"><%= alert %></div><% end %>
+      <% if notice.present? %>
+        <div class="alert alert-success" role="status"><%= notice %></div>
+      <% end %>
+      <% if flash[:info].present? %>
+        <div class="alert alert-info" role="status"><%= flash[:info] %></div>
+      <% end %>
+      <% if alert.present? %>
+        <div class="alert alert-danger" role="alert"><%= alert %></div>
+      <% end %>
       <%= yield %>
     </main>
   </body>

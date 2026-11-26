@@ -87,6 +87,20 @@ class CustomIdFlowTest < ActionDispatch::IntegrationTest
     assert_equal 0, @inventory.inventory_id_parts.count
   end
 
+  test 'occupied generated ID is rejected without consuming a sequence and a manual duplicate remains invalid' do
+    save_parts('a' => { kind: 'fixed', pattern: 'FIXED', position: 0 })
+    post inventory_items_path(@inventory), params: { item: { custom_id: '' } }
+    assert_redirected_to inventory_path(@inventory)
+    assert_equal 'FIXED', @inventory.items.last.custom_id
+    assert_no_difference '@inventory.items.count' do
+      post inventory_items_path(@inventory), params: { item: { custom_id: '' } }
+      assert_response :unprocessable_entity
+      post inventory_items_path(@inventory), params: { item: { custom_id: 'FIXED' } }
+      assert_response :unprocessable_entity
+    end
+    assert_equal 1, @inventory.reload.last_sequence
+  end
+
   private
 
   def save_parts(parts)

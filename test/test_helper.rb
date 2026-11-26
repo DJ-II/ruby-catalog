@@ -1,15 +1,11 @@
-ENV["RAILS_ENV"] ||= "test"
-require_relative "../config/environment"
-require "rails/test_help"
+ENV['RAILS_ENV'] ||= 'test'
+require_relative '../config/environment'
+require 'rails/test_help'
 
 module ActiveSupport
   class TestCase
-    # Run tests in parallel with specified workers
-    parallelize(workers: 1, with: :threads)
-
-    # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
+    parallelize(workers: 1)
     fixtures :all
-
-    # Add more helper methods to be used by all tests here...
+    setup { ApplicationController::AUTH_RATE_LIMIT_STORE.clear }
   end
 end

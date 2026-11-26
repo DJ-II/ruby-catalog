@@ -12,7 +12,14 @@
   <h2 class="h5 fw-semibold mb-3"><%= t('stats.fields') %></h2>
   <div class="table-responsive">
     <table class="table table-hover align-middle mb-0">
-      <thead><tr><th><%= t('fields.label') %></th><th><%= t('fields.type') %></th><th><%= t('stats.filled') %></th><th><%= t('stats.summary') %></th></tr></thead>
+      <thead>
+        <tr>
+          <th><%= t('fields.label') %></th>
+          <th><%= t('fields.type') %></th>
+          <th><%= t('stats.filled') %></th>
+          <th><%= t('stats.summary') %></th>
+        </tr>
+      </thead>
       <tbody>
         <% if @statistics.fields.any? %>
           <% @statistics.fields.each do |entry| %>
@@ -41,7 +48,9 @@
             </tr>
           <% end %>
         <% else %>
-          <tr><td colspan="4" class="empty-state"><%= t('stats.empty') %></td></tr>
+          <tr>
+            <td colspan="4" class="empty-state"><%= t('stats.empty') %></td>
+          </tr>
         <% end %>
       </tbody>
     </table>

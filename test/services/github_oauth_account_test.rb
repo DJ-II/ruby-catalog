@@ -49,4 +49,16 @@ class GithubOauthAccountTest < ActiveSupport::TestCase
     user.update!(username: 'previous_name')
     assert_equal 'previous_name', OauthAccount.new(auth).authenticate_or_register.username
   end
+
+  test 'username suffix lookup uses one SELECT and treats underscores literally' do
+    %w[ALPHA_BETA alpha_beta_2 alphaXbeta_3].each_with_index do |name, index|
+      User.create!(username: name, email: "prefix#{index}@example.test", password: 'TestingPass123')
+    end
+    statements = []
+    callback = ->(*args) { statements << args.last[:sql] if args.last[:sql].match?(/SELECT.*"users"/i) }
+    account = OauthAccount.new(github_auth(nickname: 'alpha_beta'))
+    result = ActiveSupport::Notifications.subscribed(callback, 'sql.active_record') { account.send(:new_username) }
+    assert_equal 'alpha_beta_3', result
+    assert_equal 1, statements.length
+  end
 end

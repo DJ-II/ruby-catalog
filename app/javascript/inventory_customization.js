@@ -92,7 +92,7 @@ function nativeReorder(list, rowSelector, handleSelector, refresh, removeOutside
     handle.addEventListener('dragstart', event => {
       dragged = row;
       event.dataTransfer.effectAllowed = 'move';
-      event.dataTransfer.setData('text/plain', 'inventoryhub-row');
+      event.dataTransfer.setData('text/plain', 'catalog-row');
       document.addEventListener('dragover', allowDrop);
       document.addEventListener('drop', drop);
     });

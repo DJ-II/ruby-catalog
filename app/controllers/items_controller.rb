@@ -21,7 +21,13 @@ class ItemsController < ApplicationController
       next_number = @inventory.items.maximum(:sequence_number).to_i + 1
       @inventory.update!(last_sequence: next_number)
       @item.sequence_number = next_number
-      @item.custom_id = @inventory.custom_id_format.generate(sequence: next_number, at: Time.current) if @item.custom_id.blank?
+      if @item.custom_id.blank?
+        @item.custom_id = AvailableCustomId.generate(@inventory, sequence: next_number)
+        if @item.custom_id.nil?
+          @item.errors.add(:custom_id, t('flash.generated_id_unavailable'))
+          raise ActiveRecord::RecordInvalid.new(@item)
+        end
+      end
       @item.save!
     end
     redirect_to inventory_path(@inventory), notice: t('flash.created')
@@ -46,7 +52,8 @@ class ItemsController < ApplicationController
     if params.dig(:item, :lock_version).blank?
       raise ActiveRecord::StaleObjectError.new(@item, 'update')
     end
-    if @item.update(item_params)
+    saved = @inventory.with_lock { @item.update(item_params) }
+    if saved
       redirect_to inventory_path(@inventory), notice: t('flash.saved')
     else
       load_fields
