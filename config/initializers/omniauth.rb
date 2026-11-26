@@ -1,6 +1,7 @@
 require 'omniauth'
 require 'omniauth-google-oauth2'
 require 'omniauth-facebook'
+require 'omniauth-github'
 require 'uri'
 
 OmniAuth.config.allowed_request_methods = [:post]
@@ -8,7 +9,7 @@ OmniAuth.config.request_validation_phase = OmniAuth::AuthenticityTokenProtection
 OmniAuth.config.logger = Rails.logger
 
 app_url = ENV['APP_URL'].to_s.strip
-if Rails.env.production? && (ENV['GOOGLE_CLIENT_ID'].present? || ENV['FACEBOOK_APP_ID'].present?) && app_url.blank?
+if Rails.env.production? && (ENV['GOOGLE_CLIENT_ID'].present? || ENV['FACEBOOK_APP_ID'].present? || ENV['GITHUB_CLIENT_ID'].present?) && app_url.blank?
   raise 'Set APP_URL to your public HTTPS origin before enabling OAuth in production'
 end
 if app_url.present?
@@ -23,6 +24,10 @@ end
 Rails.application.config.middleware.use OmniAuth::Builder do
   if ENV['GOOGLE_CLIENT_ID'].present? && ENV['GOOGLE_CLIENT_SECRET'].present?
     provider :google_oauth2, ENV.fetch('GOOGLE_CLIENT_ID'), ENV.fetch('GOOGLE_CLIENT_SECRET'), scope: 'email,profile', prompt: 'select_account'
+  end
+
+  if ENV['GITHUB_CLIENT_ID'].present? && ENV['GITHUB_CLIENT_SECRET'].present?
+    provider :github, ENV.fetch('GITHUB_CLIENT_ID'), ENV.fetch('GITHUB_CLIENT_SECRET'), scope: 'user:email'
   end
 
   if ENV['FACEBOOK_APP_ID'].present? && ENV['FACEBOOK_APP_SECRET'].present?

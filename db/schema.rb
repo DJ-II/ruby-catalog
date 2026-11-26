@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_23_000500) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_25_000100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -76,7 +76,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_23_000500) do
     t.index ["inventory_id", "kind", "slot"], name: "idx_inventory_fields_slot", unique: true
     t.index ["inventory_id"], name: "index_inventory_fields_on_inventory_id"
     t.check_constraint "NOT active OR length(btrim(title::text)) > 0", name: "inventory_fields_active_title_required"
-    t.check_constraint "kind::text = ANY (ARRAY['string'::character varying, 'text'::character varying, 'number'::character varying, 'link'::character varying, 'bool'::character varying]::text[])", name: "inventory_fields_kind_valid"
+    t.check_constraint "kind::text = ANY (ARRAY['string'::character varying::text, 'text'::character varying::text, 'number'::character varying::text, 'link'::character varying::text, 'bool'::character varying::text])", name: "inventory_fields_kind_valid"
     t.check_constraint "slot >= 1 AND slot <= 3", name: "inventory_fields_slot_valid"
   end
 
@@ -90,7 +90,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_23_000500) do
     t.index ["inventory_id", "position"], name: "index_inventory_id_parts_on_inventory_id_and_position", unique: true
     t.index ["inventory_id"], name: "index_inventory_id_parts_on_inventory_id"
     t.check_constraint "\"position\" >= 0", name: "inventory_id_parts_position_nonnegative"
-    t.check_constraint "kind::text = ANY (ARRAY['fixed'::character varying, 'random20'::character varying, 'random32'::character varying, 'random6'::character varying, 'random9'::character varying, 'guid'::character varying, 'datetime'::character varying, 'sequence'::character varying]::text[])", name: "inventory_id_parts_kind_valid"
+    t.check_constraint "kind::text = ANY (ARRAY['fixed'::character varying::text, 'random20'::character varying::text, 'random32'::character varying::text, 'random6'::character varying::text, 'random9'::character varying::text, 'guid'::character varying::text, 'datetime'::character varying::text, 'sequence'::character varying::text])", name: "inventory_id_parts_kind_valid"
   end
 
   create_table "inventory_tags", force: :cascade do |t|
@@ -155,7 +155,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_23_000500) do
     t.index ["user_id", "provider"], name: "idx_oauth_identities_user_provider", unique: true
     t.index ["user_id"], name: "index_oauth_identities_on_user_id"
     t.check_constraint "length(uid::text) > 0", name: "oauth_identities_uid_present"
-    t.check_constraint "provider::text = ANY (ARRAY['google_oauth2'::character varying, 'facebook'::character varying]::text[])", name: "oauth_identities_allowed_provider"
+    t.check_constraint "provider::text = ANY (ARRAY['google_oauth2'::character varying, 'facebook'::character varying, 'github'::character varying]::text[])", name: "oauth_identities_allowed_provider"
   end
 
   create_table "tags", force: :cascade do |t|

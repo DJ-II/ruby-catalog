@@ -1,4 +1,4 @@
-<% providers = [['google_oauth2', 'Google'], ['facebook', 'Facebook']] %>
+<% providers = [['google_oauth2', 'Google'], ['github', 'GitHub'], ['facebook', 'Facebook']] %>
 <% enabled = providers.select { |provider, _name| oauth_provider_enabled?(provider) } %>
 <% if enabled.any? %>
   <div class="d-flex align-items-center gap-3 my-4"><hr class="flex-grow-1 m-0"><span class="small text-body-secondary"><%= t('oauth.or') %></span><hr class="flex-grow-1 m-0"></div>

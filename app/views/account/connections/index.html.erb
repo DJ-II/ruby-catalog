@@ -3,8 +3,9 @@
   <%= link_to t('navigation.my_profile'), user_path(current_user), class: 'btn btn-outline-secondary' %>
 </div>
 <div class="form-panel mx-auto" style="max-width:760px">
-  <% [['google_oauth2', 'Google'], ['facebook', 'Facebook']].each do |provider, label| %>
+  <% [['google_oauth2', 'Google'], ['github', 'GitHub'], ['facebook', 'Facebook']].each do |provider, label| %>
     <% connected = @connections.find { |identity| identity.provider == provider } %>
+    <% next if provider == 'facebook' && !connected && !oauth_provider_enabled?(provider) %>
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 py-3 border-bottom">
       <div><div class="fw-semibold"><%= label %></div><div class="small text-body-secondary"><%= t(connected ? 'oauth.connected' : 'oauth.disconnected') %></div></div>
       <% if connected %>

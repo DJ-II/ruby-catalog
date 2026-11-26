@@ -293,7 +293,7 @@ pl:
     not_configured: Logowanie społecznościowe nie jest jeszcze skonfigurowane na serwerze.
     account: Bezpieczeństwo konta
     connections: Połączone konta
-    connections_help: Loguj się przez Google lub Facebook albo połącz usługę z istniejącym kontem.
+    connections_help: Loguj się przez Google lub GitHub albo połącz usługę z istniejącym kontem.
     connected: Połączono
     disconnected: Niepołączono
     connect: Połącz

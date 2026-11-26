@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
   def oauth_provider_enabled?(provider)
     case provider.to_s
     when 'google_oauth2' then ENV['GOOGLE_CLIENT_ID'].present? && ENV['GOOGLE_CLIENT_SECRET'].present?
+    when 'github' then ENV['GITHUB_CLIENT_ID'].present? && ENV['GITHUB_CLIENT_SECRET'].present?
     when 'facebook' then ENV['FACEBOOK_APP_ID'].present? && ENV['FACEBOOK_APP_SECRET'].present?
     else false
     end

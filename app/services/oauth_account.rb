@@ -56,7 +56,8 @@ class OauthAccount
 
   def email_for_new_user
     supplied = @info['email'].to_s.strip.downcase
-    return supplied if @provider == 'google_oauth2' && verified_google_email? && supplied.match?(URI::MailTo::EMAIL_REGEXP)
+    verified = (@provider == 'google_oauth2' && verified_google_email?) || (@provider == 'github' && verified_github_email?(supplied))
+    return supplied if verified && supplied.match?(URI::MailTo::EMAIL_REGEXP)
 
     "social_#{Digest::SHA256.hexdigest("#{@provider}:#{@uid}")[0,24]}@oauth.inventoryhub.invalid"
   end
@@ -67,12 +68,31 @@ class OauthAccount
     [raw['email_verified'], claims['email_verified'], @info['email_verified']].any? { |v| v == true || v == 'true' }
   end
 
+  def verified_github_email?(email)
+    entries = @extra['all_emails']
+    return false unless entries.is_a?(Array) && email.present?
+
+    entries.any? do |entry|
+      entry.is_a?(Hash) &&
+        entry['primary'] == true && entry['verified'] == true &&
+        entry['email'].to_s.strip.downcase == email
+    end
+  end
+
   def new_username
-    display = @info['name'].presence || @info['nickname'].presence || 'member'
-    base = display.to_s.gsub(/[^\p{L}\p{N}_-]+/u, '_').gsub(/\A[_-]+|[_-]+\z/u, '')[0, 18]
-    base = 'member' if base.blank?
-    prefix = @provider == 'facebook' ? 'fb' : 'google'
-    suffix = Digest::SHA256.hexdigest("#{@provider}:#{@uid}")[0, 12]
-    "#{prefix}_#{base}_#{suffix}"
+    display = if @provider == 'github'
+      @info['nickname'].presence || @info['name'].presence
+    else
+      @info['name'].presence || @info['nickname'].presence
+    end
+    base = display.to_s.gsub(/[^\p{L}\p{N}_-]+/u, '_').gsub(/\A[_-]+|[_-]+\z/u, '')[0, 40]
+    base = 'member' if base.length < 3
+    candidate = base
+    number = 2
+    while User.where('lower(username) = ?', candidate.downcase).exists?
+      candidate = "#{base}_#{number}"
+      number += 1
+    end
+    candidate
   end
 end

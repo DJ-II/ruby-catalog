@@ -292,7 +292,7 @@ en:
     not_configured: Social sign-in has not been configured on this server.
     account: Account security
     connections: Connected accounts
-    connections_help: Sign in with Google or Facebook, or connect a provider to your existing account.
+    connections_help: Sign in with Google or GitHub, or connect a provider to your existing account.
     connected: Connected
     disconnected: Not connected
     connect: Connect

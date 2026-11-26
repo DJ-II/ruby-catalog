@@ -75,3 +75,5 @@ gem 'omniauth-facebook', '~> 11.0'
 gem 'caxlsx', '~> 4.5'
 
 gem "csv", "~> 3.3"
+
+gem 'omniauth-github', '~> 2.0.1'
