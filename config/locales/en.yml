@@ -37,6 +37,10 @@ en:
         external account identifiers, preferences, inventories, items, comments and
         likes. OAuth providers may supply a name and email. We do not store provider
         access tokens as part of the account record.
+        To protect sign-in and registration, the service temporarily stores a
+        keyed hash of the client IP address, request counters and expiry times
+        in its database. Expired entries are removed during subsequent
+        authentication requests.
     visibility:
       title: Public content
       body: Inventories, items, discussions and profile names are available to visitors.

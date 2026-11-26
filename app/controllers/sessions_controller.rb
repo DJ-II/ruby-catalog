@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  rate_limit to: 10, within: 1.minute, only: :create, store: AUTH_RATE_LIMIT_STORE, name: 'login', with: -> { rate_limited }
+  before_action :enforce_rate_limit, only: :create
 
   def new; end
 
@@ -24,8 +24,10 @@ class SessionsController < ApplicationController
 
   private
 
-  def rate_limited
-    response.set_header('Retry-After', '60')
+  def enforce_rate_limit
+    retry_after = AuthRateLimit.consume(scope: 'login', client_ip: AuthRateLimit.client_ip(request), limit: 10, period: 1.minute)
+    return unless retry_after
+    response.set_header('Retry-After', retry_after.to_s)
     flash.now[:alert] = t('flash.rate_limited')
     render :new, status: :too_many_requests
   end

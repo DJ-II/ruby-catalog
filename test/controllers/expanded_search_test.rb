@@ -35,4 +35,20 @@ class ExpandedSearchTest < ActionDispatch::IntegrationTest
     assert_select "a[href='#{inventory_item_path(@inventory, @item)}']", count: 1
     assert_select "a[href='#{inventory_item_path(@other, @other_item)}']", count: 0
   end
+
+  test 'search form preserves tag until explicitly cleared' do
+    get search_path(tag: 'specialhardware')
+    assert_response :success
+    assert_select "form.site-search input[type='hidden'][name='tag'][value='specialhardware']", count: 1
+    get search_path(q: '98765', tag: 'specialhardware')
+    assert_response :success
+    assert_select "form.site-search input[type='hidden'][name='tag'][value='specialhardware']", count: 1
+    assert_select "a[href='#{search_path(q: '98765')}']", text: I18n.t('tags.clear_filter', locale: :en)
+    get search_path(q: '98765')
+    assert_response :success
+    assert_select "form.site-search input[name='tag']", count: 0
+    assert_select "a[href='#{inventory_item_path(@other, @other_item)}']", count: 1
+    get root_path(tag: 'specialhardware')
+    assert_select "form.site-search input[name='tag']", count: 0
+  end
 end

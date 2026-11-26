@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  AUTH_RATE_LIMIT_STORE = ActiveSupport::Cache::MemoryStore.new(size: 8.megabytes)
   allow_browser versions: :modern
   around_action :switch_locale
   helper_method :current_user, :logged_in?, :can_manage?, :can_write?, :oauth_provider_enabled?, :preferred_theme

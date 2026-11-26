@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_26_000200) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_26_000300) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "auth_rate_limits", force: :cascade do |t|
+    t.string "scope", limit: 16, null: false
+    t.string "client_key", limit: 64, null: false
+    t.integer "attempts", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expires_at"], name: "index_auth_rate_limits_on_expires_at"
+    t.index ["scope", "client_key"], name: "index_auth_rate_limits_on_scope_and_client_key", unique: true
+    t.check_constraint "attempts > 0", name: "auth_rate_limits_positive_attempts"
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "name", null: false

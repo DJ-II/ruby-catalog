@@ -1,7 +1,7 @@
 class RegistrationsController < ApplicationController
   before_action :redirect_logged_in, only: [:new, :create]
 
-  rate_limit to: 5, within: 10.minutes, only: :create, store: AUTH_RATE_LIMIT_STORE, name: 'signup', with: -> { rate_limited }
+  before_action :enforce_rate_limit, only: :create
 
   def new
     @user = User.new
@@ -20,9 +20,11 @@ class RegistrationsController < ApplicationController
 
   private
 
-  def rate_limited
+  def enforce_rate_limit
+    retry_after = AuthRateLimit.consume(scope: 'signup', client_ip: AuthRateLimit.client_ip(request), limit: 5, period: 10.minutes)
+    return unless retry_after
     @user = User.new
-    response.set_header('Retry-After', '600')
+    response.set_header('Retry-After', retry_after.to_s)
     flash.now[:alert] = t('flash.rate_limited')
     render :new, status: :too_many_requests
   end

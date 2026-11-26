@@ -6,6 +6,5 @@ module ActiveSupport
   class TestCase
     parallelize(workers: 1)
     fixtures :all
-    setup { ApplicationController::AUTH_RATE_LIMIT_STORE.clear }
   end
 end

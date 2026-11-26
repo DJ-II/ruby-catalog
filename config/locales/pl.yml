@@ -36,6 +36,10 @@ pl:
         dotyczy), identyfikatory kont zewnętrznych, preferencje, inwentarze, przedmioty,
         komentarze i polubienia. Dostawcy OAuth mogą udostępniać nazwę oraz e-mail.
         Tokeny dostępu dostawców nie są zapisywane w rekordzie konta.
+        W celu ochrony logowania i rejestracji serwis tymczasowo przechowuje w
+        bazie skrót adresu IP obliczony z kluczem, liczniki żądań i czasy
+        wygaśnięcia. Wygasłe wpisy są usuwane podczas kolejnych żądań
+        uwierzytelnienia.
     visibility:
       title: Publiczna zawartość
       body: Inwentarze, przedmioty, dyskusje i nazwy profili są dostępne dla odwiedzających.

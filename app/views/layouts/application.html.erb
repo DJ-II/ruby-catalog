@@ -32,6 +32,9 @@
               <%= link_to t('navigation.explore'), inventories_path, class: 'btn btn-outline-secondary explore-link' %>
             </nav>
             <%= form_with url: search_path, method: :get, class: 'site-search', role: 'search' do |f| %>
+              <% if controller_path == 'search' && @tag.present? %>
+                <%= f.hidden_field :tag, value: @tag %>
+              <% end %>
               <div class="search-input-wrap">
                 <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
                 <%= f.search_field :q, value: params[:q], class: 'form-control', placeholder: t('navigation.search'), 'aria-label': t('navigation.search'), maxlength: 120 %>
