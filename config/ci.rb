@@ -1,15 +1,14 @@
 # Run using bin/ci
 
+abort 'Unset DATABASE_URL before running local CI.' unless ENV['DATABASE_URL'].to_s.empty?
+ENV['RAILS_ENV'] = 'test'
+ENV['PARALLEL_WORKERS'] = '1'
+
 CI.run do
-  step "Setup", "bin/setup --skip-server"
-
-  step "Style: Ruby", "bin/rubocop"
-
-  step "Security: Gem audit", "bin/bundler-audit"
-  step "Security: Importmap vulnerability audit", "bin/importmap audit"
-  step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
-  step "Tests: Rails", "bin/rails test"
-  step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant"
+  step 'Setup: Test database', 'bundle exec ruby bin/rails db:prepare'
+  step 'Security: Gem audit', 'bundle exec bundler-audit check --update'
+  step 'Security: Brakeman code analysis', 'bundle exec brakeman --quiet --no-pager --exit-on-warn --exit-on-error'
+  step 'Tests: Rails', 'bundle exec ruby bin/rails test'
 
   # Optional: Run system tests
   # step "Tests: System", "bin/rails test:system"

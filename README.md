@@ -1,4 +1,4 @@
-﻿# Catalog
+# Catalog
 
 Catalog is a Rails inventory management application with configurable inventory numbers, typed custom fields and collaborative editing.
 
@@ -24,7 +24,7 @@ bundle exec ruby bin/rails db:seed
 bundle exec ruby bin/rails server
 ```
 
-Adjust the port and database settings to your local PostgreSQL installation. Open `http://localhost:3000`. Use separate development and test databases.
+Adjust `config/database.yml` to your local PostgreSQL installation if the host, port or database names differ. Open `http://localhost:3000`. Use separate development and test databases.
 
 ## Tests
 
@@ -71,21 +71,23 @@ Users can change their username or delete their account. Account deletion requir
 
 Set a real contact email before public release. The unsigned upload preset should be restricted to appropriate image formats; consider signed uploads for a wider public deployment.
 
-
 ## Search and authentication safeguards
 
 Search uses PostgreSQL full-text indexes. Inventory results include titles, descriptions, tags, active field definitions and discussion text. Item results include inventory numbers and all stored typed values. The tag filter is independent of the item query.
 
 Automatic inventory numbers use up to ten random candidates checked in one query. Explicitly supplied duplicate numbers are rejected.
 
-Password sign-in allows ten requests per minute per client IP; signup allows five per ten minutes. The in-memory rate-limit store is shared by controllers within one process. Configure a shared cache if deploying multiple processes or instances. These limits do not cover external OAuth providers.
+Password sign-in allows ten requests per minute per client IP; signup allows five per ten minutes. Rate limits are stored in PostgreSQL using hashed client identifiers and atomic counter updates. The counters are shared across application processes and persist across application restarts. These limits do not cover external OAuth providers.
 
 ## Security checks
 
 ```powershell
-bundle exec brakeman -q
+bundle exec brakeman -q --no-pager
 bundle exec bundler-audit check --update
 ```
 
 The dependency scan requires internet access and the deployed project's actual Gemfile.lock. Review any warnings before releasing; do not suppress findings without investigating them.
 
+## Continuous integration
+
+GitHub Actions runs on pushes to `main` and pull requests. It checks Ruby and JavaScript syntax, runs Brakeman and Bundler Audit, and executes the Rails test suite against a dedicated PostgreSQL 18 database created for the job. No production credentials are required. The JavaScript syntax check does not audit third-party CDN dependencies.
